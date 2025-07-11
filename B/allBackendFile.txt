@@ -1,0 +1,2434 @@
+/// start backend file \\\
+
+backend / controllers / v1 / articleController.js (
+   const articleModel = require("../../models/article");
+const sessionModel = require("../../models/session");
+
+exports.create = async (req, res) => {
+  const { title, description, body, shortName, categoryID } = req.body;
+
+  console.log(req.body);
+
+  const article = await articleModel.create({
+    title,
+    description,
+    shortName,
+    body,
+    creator: req.user._id,
+    categoryID,
+    cover: "images/courses/js.jpeg",
+  });
+
+  const populatedCourse = await articleModel
+    .findById(article._id)
+    .populate("creator", "-password");
+
+  return res.status(201).json(populatedCourse);
+};
+
+exports.getAll = async (req, res) => {
+  const articles = await articleModel.find().populate("creator", "-password");
+
+  return res.json(articles);
+};
+
+exports.getOne = async (req, res) => {
+  const article = await articleModel
+    .findOne({ shortName: req.params.shortName })
+    .populate("categoryID")
+    .populate("creator", "-password")
+    .lean();
+
+  res.json(article);
+};
+ 
+)
+backend / controllers / v1 / auth.js (
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const userModel = require('../../models/user');
+const courseUserModel = require('../../models/course-user');
+const registerValidator = require('../../validators/v1/register');
+
+exports.register = async (req, res) => {
+  console.log(req.body);
+  
+  const validationResult = registerValidator(req.body);
+  if (validationResult != true) return res.status(422).json(validationResult);
+  const { username, password, name, email } = req.body;
+
+  const isUserExists = await userModel.findOne({
+    $or: [{ username }, { email }],
+  });
+
+  const countOfRegisteredUser = await userModel.count();
+
+  if (isUserExists) {
+    return res.status(409).json({
+      message: 'username or email is duplicate.',
+    });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+  const user = await userModel.create({
+    email,
+    username,
+    name,
+    password: hashedPassword,
+    role: countOfRegisteredUser > 0 ? 'USER' : 'ADMIN',
+  });
+
+  const userObject = user.toObject();
+
+  Reflect.deleteProperty(userObject, 'password');
+
+  const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: '1 day',
+  });
+
+  return res.status(201).json({ user: userObject, accessToken });
+};
+
+exports.login = async (req, res) => {
+  const { identifier, password } = req.body;
+
+  const user = await userModel.findOne({
+    $or: [{ email: identifier }, { username: identifier }],
+  });
+
+  if (!user) {
+    return res.status(401).json('there is no user with this email or username');
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+    return res.status(401).json({ message: 'password is not correct' });
+  }
+
+  const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: '30 day',
+  });
+
+  return res.json({ accessToken });
+};
+
+exports.getMe = async (req, res) => {
+  const userCourses = await courseUserModel
+    .find({ user: req.user._id })
+    .populate('course');
+
+  const courses = [];
+
+  for (const userCourse of userCourses) {
+    courses.push(userCourse.course);
+  }
+
+  return res.json({ ...req.user, courses });
+};
+
+)
+backend / controllers / v1 / category.js (
+const categoryModel = require("../../models/category");
+
+exports.create = async (req, res) => {
+  const { title } = req.body;
+
+  const newCategory = await categoryModel.create({ title });
+
+  return res.status(201).json(newCategory);
+};
+
+)
+backend / controllers / v1 / comment.js (
+const commentModel = require("../../models/comment");
+const userModel = require("../../models/user");
+const courseModel = require("../../models/course");
+
+exports.create = async (req, res) => {
+  const { body, courseShortName } = req.body;
+
+  console.log(body, courseShortName, req.user._id);
+  const course = await courseModel.findOne({ shortName: courseShortName });
+
+  console.log(course);
+
+  const comment = await commentModel.create({
+    body,
+    course: course._id,
+    creator: req.user._id,
+  });
+
+    return res.status(201).json(comment);
+};
+
+// exports.getAll = async (req, res) => {
+//   const courses = await courseModel.find().populate("creator", "-password");
+
+//   return res.json(courses);
+// };
+)
+backend / controllers / v1 / course.js (
+const courseModel = require("../../models/course");
+const sessionModel = require("../../models/session");
+const commentModel = require("../../models/comment");
+const courseUserModel = require("../../models/course-user");
+
+exports.create = async (req, res) => {
+  const { name, description, shortName, categoryID } = req.body;
+
+  console.log(req.body);
+
+  const course = await courseModel.create({
+    name,
+    description,
+    shortName,
+    creator: req.user._id,
+    categoryID,
+    isComplete: 0,
+    support: 'گروه تلگرامی',
+    cover: "images/courses/js.jpeg",
+  });
+
+  const populatedCourse = await courseModel
+    .findById(course._id)
+    .populate("creator", "-password");
+
+  return res.status(201).json(populatedCourse);
+};
+
+exports.getAll = async (req, res) => {
+  const courses = await courseModel.find().populate("creator", "-password");
+
+  return res.json(courses);
+};
+
+exports.getOne = async (req, res) => {
+//   const course = await courseModel
+//     .findOne({ shortName: req.params.shortName })
+//     .populate("categoryID", "-password")
+//     .populate("creator", "-password")
+//     .lean();
+
+  const course = await courseModel.findOne({ shortName: req.params.shortName })
+    .populate("categoryID", "-password")
+    .populate("creator", "-password")
+    .lean();
+
+  // بررسی وجود دوره
+  if (!course) {
+    return res.status(404).json({ message: "دوره یافت نشد" });
+  }
+
+  const sessions = await sessionModel.find({ course: course._id }).lean();
+  // const comments = await commentModel.find({ course: course._id }).populate('creator').lean();
+  const comments = await commentModel.find({ course: course._id }).populate('creator').lean();
+
+  const courseStudentsCount = await courseUserModel
+    .find({
+      course: course._id,
+    })
+    .count();
+    let isUserRegisteredToThisCourse = null
+  if (req.user) {
+    isUserRegisteredToThisCourse = !!(await courseUserModel.findOne({
+      user: req.user._id,
+      course: course._id,
+    }));
+  } else {
+    isUserRegisteredToThisCourse = false;
+  }
+
+  return res.json({
+    ...course,
+    courseStudentsCount,
+    sessions,
+    comments,
+    isUserRegisteredToThisCourse,
+  });
+};
+
+exports.createSession = async (req, res) => {
+  const { title, time } = req.body;
+
+  const session = await sessionModel.create({
+    title,
+    time,
+    course: req.params.id,
+  });
+
+  return res.status(201).json(session);
+};
+
+exports.register = async (req, res) => {
+  const isUserAlreadyRegistered = await courseUserModel
+    .findOne({ user: req.user._id, course: req.params.id })
+    .lean();
+
+  if (isUserAlreadyRegistered) {
+    return res
+      .status(409)
+      .json({ message: "you are already registered to this course." });
+  }
+
+  await courseUserModel.create({
+    user: req.user._id,
+    course: req.params.id,
+  });
+
+  return res.status(201).json({ message: "you are registered successfully." });
+};
+)
+backend / controllers / v1 / menu.js (
+const menuModel = require('../../models/menu');
+
+exports.getAll = async (req, res) => {
+  const menus = await menuModel.find().lean();
+
+  for (const menu of menus) {
+    const submenus = [];
+    for (let i = 0; i < menus.length; i++) {
+      const m = menus[i];
+      if (m.parent?.equals(menu._id)) {
+        submenus.push(menus.splice(i, 1)[0]);
+        i = i - 1;
+      }
+    }
+    menu.submenus = submenus;
+  }
+
+  return res.json(menus);
+};
+
+exports.create = async (req, res) => {
+  const { href, title, parent } = req.body;
+
+  const menu = await menuModel.create({ title, href, parent });
+
+  return res.status(201).json(menu);
+};
+
+exports.getAllTopbarLinks = async (req, res) => {
+  const menus = await menuModel.find().lean();
+  let topbarLinks = []
+
+  for(const menu of menus) {
+    if(menu.parent) {
+      topbarLinks.push(menu)
+    }
+  }
+
+  res.json(topbarLinks)
+}
+)
+backend / middlewares / authenticated.js (
+const jwt = require('jsonwebtoken');
+const userModel = require('../models/user');
+
+module.exports = async (req, res, next) => {
+  const authorizationHeader = req.header('Authorization')?.split(' ');
+
+  if (authorizationHeader?.length != 2) {
+    return res.status(403).json({
+      message: "this route is protected and you can't have access to  it.",
+    });
+  }
+
+  const token = authorizationHeader[1];
+  
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await userModel.findById(decoded.id).lean();
+    Reflect.deleteProperty(user, 'password');
+
+    req.user = user;
+
+    next();
+  } catch (error) {
+    console.error({ errorOnValidatingJWT: error });
+  }
+};
+
+)
+backend / middlewares / isAdmin.js (
+module.exports = async (req, res, next) => {
+  const isAdmin = req.user.role === 'ADMIN';
+
+  if (isAdmin) return next();
+
+  return res
+    .status(403)
+    .json({ message: 'this route is accessible only for admins.' });
+};
+
+)
+backend / middlewares / loginUser.js (
+const jwt = require("jsonwebtoken");
+const userModel = require("../models/user");
+
+module.exports = async (req, res, next) => {
+  const authorizationHeader = req.header("Authorization")?.split(" ");
+
+  if (authorizationHeader?.length != 2) {
+    return res.status(403).json({
+      message: "this route is protected and you can't have access to  it.",
+    });
+  }
+
+  const token = authorizationHeader[1];
+
+  if (token === "null") {
+    req.user = null;
+    next();
+  } else {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      const user = await userModel.findById(decoded.id).lean();
+      Reflect.deleteProperty(user, "password");
+
+      req.user = user;
+
+      next();
+    } catch (error) {
+      console.error({ errorOnValidatingJWT: error });
+    }
+  }
+};
+
+)
+backend / models / article.js (
+const mongoose = require("mongoose");
+
+const schema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    body: {
+      type: String,
+      required: true,
+    },
+    cover: {
+      type: String,
+      required: false,
+    },
+    shortName: {
+      type: String,
+      required: true,
+    },
+    categoryID: {
+      type: mongoose.Types.ObjectId,
+      ref: "Category",
+      require: true,
+    },
+    creator: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+  },
+  { timestamps: true }
+);
+
+const model = mongoose.model("Article", schema);
+
+module.exports = model;
+
+)
+backend / models / category.js (
+const mongoose = require("mongoose");
+
+const schema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+const model = mongoose.model("Category", schema);
+
+module.exports = model;
+
+)
+backend / models / comment.js (
+const mongoose = require("mongoose");
+
+const schema = new mongoose.Schema(
+  {
+    body: {
+      type: String,
+      required: true,
+    },
+    course: {
+      type: mongoose.Types.ObjectId,
+      ref: "Course"
+    },
+    creator: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+  },
+  { timestamps: true }
+);
+
+const model = mongoose.model("Comment", schema);
+
+module.exports = model;
+
+)
+backend / models / course-user.js (
+const mongoose = require('mongoose');
+
+const schema = new mongoose.Schema(
+  {
+    course: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Course',
+    },
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: 'User',
+    },
+  },
+  { timestamps: true }
+);
+
+const model = mongoose.model('CourseUser', schema);
+
+module.exports = model;
+
+)
+backend / models / course.js (
+const mongoose = require("mongoose");
+
+const schema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    cover: {
+      type: String,
+      required: false,
+    },
+    support: {
+      type: String,
+      required: false,
+    },
+    shortName: {
+      type: String,
+      required: true,
+    },
+    isComplete: {
+      type: Number,
+      required: true,
+    },
+    categoryID: {
+      type: mongoose.Types.ObjectId,
+      ref: "Category",
+      require: true,
+    },
+    creator: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+  },
+  { timestamps: true }
+);
+
+schema.virtual("sessions", {
+  ref: "Session",
+  localField: "_id",
+  foreignField: "course",
+});
+
+schema.virtual("comments", {
+  ref: "Comment",
+  localField: "_id",
+  foreignField: "course",
+});
+
+const model = mongoose.model("Course", schema);
+
+module.exports = model;
+
+)
+backend / models / menu.js (
+const mongoose = require('mongoose');
+
+const schema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    href: {
+      type: String,
+      required: true,
+    },
+    parent: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Menu',
+    },
+  },
+  { timestamps: true }
+);
+
+const model = mongoose.model('Menu', schema);
+
+module.exports = model;
+
+)
+backend / models / session.js (
+const mongoose = require('mongoose');
+
+const schema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    time: {
+      type: String,
+      required: true,
+    },
+    course: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Course',
+    },
+  },
+  { timestamps: true }
+);
+
+const model = mongoose.model('Session', schema);
+
+module.exports = model;
+
+)
+backend / models / user.js (
+const mongoose = require('mongoose');
+
+const schema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ['ADMIN', 'USER'],
+      default: 'USER',
+    },
+  },
+  { timestamps: true }
+);
+
+const model = mongoose.model('User', schema);
+
+module.exports = model;
+
+)
+backend / routes / v1 / article.js (
+const express = require('express');
+const multer = require('multer');
+
+const articleController = require('../../controllers/v1/articleController');
+const multerStorage = require('../../util/multerStorage');
+const authenticatedMiddleware = require('../../middlewares/authenticated');
+const isAdminMiddleware = require('../../middlewares/isAdmin');
+
+const router = express.Router();
+
+router.use(authenticatedMiddleware);
+
+router
+  .route('/')
+  .post(
+    // multer({ storage: multerStorage }).single('cover'),
+    isAdminMiddleware,
+    articleController.create
+  )
+  .get(articleController.getAll);
+
+router.route('/:shortName').get(articleController.getOne);
+
+module.exports = router;
+
+)
+backend / routes / v1 / auth.js (
+const express = require('express');
+
+const controller = require('../../controllers/v1/auth');
+const authenticatedMiddleware = require('../../middlewares/authenticated');
+
+const router = express.Router();
+
+router.post('/register', controller.register);
+router.post('/login', controller.login);
+router.get('/me', authenticatedMiddleware, controller.getMe);
+
+module.exports = router;
+
+)
+backend / routes / v1 / category.js (
+const express = require('express');
+
+const isAdminMiddleware = require('../../middlewares/isAdmin');
+const authenticatedMiddleware = require('../../middlewares/authenticated');
+const controller = require('../../controllers/v1/category');
+
+const router = express.Router();
+
+router
+  .route('/')
+  .post(authenticatedMiddleware, isAdminMiddleware, controller.create);
+
+module.exports = router;
+
+)
+backend / routes / v1 / comment.js (
+const express = require("express");
+
+const commentController = require("../../controllers/v1/comment");
+const authenticatedMiddleware = require("../../middlewares/authenticated");
+const isAdminMiddleware = require("../../middlewares/isAdmin");
+
+const router = express.Router();
+
+router
+  .route("/")
+  .post(authenticatedMiddleware, commentController.create);
+//   .get(commentController.getAll);
+
+// router
+//   .route("/:id/sessions")
+//   .post(isAdminMiddleware, commentController.createSession);
+
+// router.route("/:shortName").post(commentController.getOne);
+
+// router.route("/:id/register").post(commentController.register);
+
+module.exports = router;
+
+)
+backend / routes / v1 / course.js (
+const express = require("express");
+const multer = require("multer");
+
+const courseController = require("../../controllers/v1/course");
+const multerStorage = require("../../util/multerStorage");
+const authenticatedMiddleware = require("../../middlewares/authenticated");
+const isAdminMiddleware = require("../../middlewares/isAdmin");
+const loginUser = require('./../../middlewares/loginUser')
+
+const router = express.Router();
+
+// router.use(authenticatedMiddleware);
+
+router
+  .route("/")
+  .post(
+    // multer({ storage: multerStorage }).single('cover'),
+    authenticatedMiddleware,
+    isAdminMiddleware,
+    courseController.create
+  )
+  .get(courseController.getAll);
+
+router
+  .route("/:id/sessions")
+  .post(isAdminMiddleware, courseController.createSession);
+
+router.route("/:shortName").get(loginUser, courseController.getOne); // ✅ باید GET باشد
+// router.route("/:shortName").post(loginUser, courseController.getOne);
+
+router.route("/:id/register").post(courseController.register);
+
+module.exports = router;
+
+
+)
+backend / routes / v1 / menu.js (
+const express = require('express');
+
+const isAdminMiddleware = require('../../middlewares/isAdmin');
+const authenticatedMiddleware = require('../../middlewares/authenticated');
+const controller = require('../../controllers/v1/menu');
+
+const router = express.Router();
+
+router
+  .route('/')
+  .get(controller.getAll)
+  .post(authenticatedMiddleware, isAdminMiddleware, controller.create);
+
+  router.get('/topbar', controller.getAllTopbarLinks)
+
+module.exports = router;
+
+)
+backend / util / multerStorage.js (
+const path = require('path');
+const crypto = require('crypto');
+const multer = require('multer');
+
+module.exports = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '..', 'public', 'courses', 'covers'));
+  },
+  filename: (req, file, cb) => {
+    const sha256 = crypto.createHash('SHA256');
+    const hashedFileName = sha256.update(file.originalname).digest('hex');
+    cb(null, hashedFileName + path.extname(file.originalname));
+  },
+});
+
+)
+backend / validators / v1 / register.js (
+const Validator = require('fastest-validator');
+
+const v = new Validator();
+
+const schema = {
+  name: { type: 'string', min: 3, max: 255 },
+  username: { type: 'string', min: 3, max: 100 },
+  email: { type: 'email' },
+  password: { type: 'string' },
+  confirmPassword: { type: 'equal', field: 'password' },
+  $$strict: true, // no additional properties allowed
+};
+
+const check = v.compile(schema);
+
+module.exports = check;
+)
+backend / .env (
+PORT=4000
+MONGO_URI=mongodb://localhost:27017/lms
+JWT_SECRET=jklsdfjdlskfjklsd
+)
+
+backend / app.json (
+    const express = require("express");
+const path = require("path");
+
+const authRoutes = require("./routes/v1/auth");
+const courseRoutes = require("./routes/v1/course");
+const menuRoutes = require("./routes/v1/menu");
+const categoryRoutes = require("./routes/v1/category");
+const articlesRoutes = require("./routes/v1/article");
+const commentsRoutes = require("./routes/v1/comment");
+const bodyParser = require('body-parser')
+const cors = require("cors");
+
+const app = express();
+
+app.use(cors())
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(
+  "/courses/covers",
+  express.static(path.join(__dirname, "public", "course", "covers"))
+);
+
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
+
+app.use("/v1/auth", authRoutes);
+app.use("/v1/courses", courseRoutes);
+app.use("/v1/menus", menuRoutes);
+app.use("/v1/category", categoryRoutes);
+app.use("/v1/articles", articlesRoutes);
+app.use("/v1/comments", commentsRoutes);
+
+module.exports = app;
+
+)
+backend / package.json (
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "fastest-validator": "^1.15.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.6.5",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
+
+)
+backend / sabzlearnApis.json (
+{
+	"id": "2138de73-8016-2ff2-0063-729577c7175c",
+	"name": "Saeeidi Rad LMS",
+	"description": "",
+	"order": [],
+	"folders": [
+		{
+			"name": "Article",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"order": [
+				"6934ca2d-e47e-747b-0cb3-d7ea2f79ea21",
+				"1b7046e5-028b-e28a-18e1-d4aa16e50935",
+				"fe75aa7f-91ca-4d12-0e1c-05e2b5a5930b"
+			],
+			"owner": 0,
+			"folders_order": [],
+			"id": "89b153e4-7fd4-78a9-782a-5477a4b0eccc"
+		},
+		{
+			"id": "8620ae36-93b1-1214-15f6-9ca11ed5cc6c",
+			"name": "Authentication",
+			"description": "",
+			"order": [
+				"7471fb03-0ea8-becd-8b87-bcf4fbc3266b",
+				"7da605b0-1b3b-25a7-d4d8-e983a51d67ff",
+				"8be7816a-672a-b968-bbcf-50c2272e5f0c"
+			],
+			"folders_order": [],
+			"owner": 0,
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c"
+		},
+		{
+			"name": "Category",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"order": [
+				"36e87b7a-2dd1-54b1-1d53-470786697e11"
+			],
+			"owner": 0,
+			"folders_order": [],
+			"id": "a8271fa0-647a-2c25-6489-8094ec16b7a6"
+		},
+		{
+			"id": "6b9acd8f-fd31-1296-811f-86052fdd8aa9",
+			"name": "Course",
+			"description": "",
+			"order": [
+				"83118a2a-a1d6-ff3b-6f38-71d88953fa99",
+				"8801fd5d-f106-7fdd-309f-faf18916240c",
+				"b2f9f3e9-666e-8d30-5e67-abd6a5ed3652",
+				"7d4e8c2f-f342-ee2f-1159-221c1337534b",
+				"7c246394-d0e9-8ab0-cefd-1a88e90de6eb"
+			],
+			"folders_order": [],
+			"owner": 0,
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c"
+		},
+		{
+			"id": "fd99405f-c861-d7f5-a70c-b3c9b3ba9f53",
+			"name": "Menu",
+			"description": "",
+			"order": [
+				"bde7a3a1-cdd8-6de4-4bc3-c7c69ee376bf",
+				"b93d9d10-9e05-53a1-b6b0-10b5f420550f",
+				"74c35179-bb15-7d27-8931-bf23975296a2"
+			],
+			"folders_order": [],
+			"owner": 0,
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c"
+		}
+	],
+	"folders_order": [
+		"8620ae36-93b1-1214-15f6-9ca11ed5cc6c",
+		"6b9acd8f-fd31-1296-811f-86052fdd8aa9",
+		"fd99405f-c861-d7f5-a70c-b3c9b3ba9f53",
+		"a8271fa0-647a-2c25-6489-8094ec16b7a6",
+		"89b153e4-7fd4-78a9-782a-5477a4b0eccc"
+	],
+	"timestamp": 0,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "1b7046e5-028b-e28a-18e1-d4aa16e50935",
+			"headers": "Authorization: user token\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "user token",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{baseUrl}}/articles",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"data": null,
+			"dataMode": "params",
+			"name": "All",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1665699396635,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "89b153e4-7fd4-78a9-782a-5477a4b0eccc"
+		},
+		{
+			"id": "36e87b7a-2dd1-54b1-1d53-470786697e11",
+			"headers": "Authorization: user token\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "user token",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{baseUrl}}/category",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"data": [],
+			"dataMode": "raw",
+			"name": "Create",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1665698399971,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "a8271fa0-647a-2c25-6489-8094ec16b7a6",
+			"rawModeData": "{\n\t\"title\": \"{{$randomCategoryTitle}}\"\n}"
+		},
+		{
+			"id": "6934ca2d-e47e-747b-0cb3-d7ea2f79ea21",
+			"headers": "Content-Type: application/json\nAuthorization: admin token\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Authorization",
+					"value": "admin token",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{baseUrl}}/articles",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"data": [],
+			"dataMode": "raw",
+			"name": "Create",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1665699141819,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "89b153e4-7fd4-78a9-782a-5477a4b0eccc",
+			"rawModeData": "{\n\t\"title\": \"{{$randomTitle}}\",\n\t\"description\": \"{{$randomDescription}}\",\n\t\"body\": \"{{$randomBody}}\",\n\t\"shortName\": \"{{$randomShortName}}\",\n\t\"categoryID\": \"{{$randomCategoryID}}\",\n\t\"cover\": \"{{$fileUpload}}\"\n}"
+		},
+		{
+			"id": "7471fb03-0ea8-becd-8b87-bcf4fbc3266b",
+			"name": "Register",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"method": "POST",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"username\": \"{{$randomUserName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"123456\",\n    \"confirmPassword\": \"123456\" \n}",
+			"tests": "if(pm.response.code == 201) {\n    pm.collectionVariables.set('accessToken', pm.response.json().accessToken)\n}",
+			"preRequestScript": "",
+			"url": "{{baseUrl}}/auth/register",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "2138de73-8016-2ff2-0063-729577c7175c",
+			"folder": "8620ae36-93b1-1214-15f6-9ca11ed5cc6c"
+		},
+		{
+			"id": "74c35179-bb15-7d27-8931-bf23975296a2",
+			"headers": "//Content-Type: application/json\n//Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNDU4YWYyMWRmODlhZTE0NjllMjk4NCIsImlhdCI6MTY2NTUwMjk5MSwiZXhwIjoxNjY1NTg5MzkxfQ.3s9141W2Q6eqSLu90bqlI3V_83AGT8LmflzAw4KAB_w\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": false
+				},
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNDU4YWYyMWRmODlhZTE0NjllMjk4NCIsImlhdCI6MTY2NTUwMjk5MSwiZXhwIjoxNjY1NTg5MzkxfQ.3s9141W2Q6eqSLu90bqlI3V_83AGT8LmflzAw4KAB_w",
+					"description": "",
+					"enabled": false
+				}
+			],
+			"url": "{{baseUrl}}/menus/topbar",
+			"folder": "fd99405f-c861-d7f5-a70c-b3c9b3ba9f53",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1665508581105,
+			"name": "Topbar",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"responses": [],
+			"rawModeData": "{\n    \"title\": \"آموزش  ساخت ربات با پایتون\",\n    \"href\": \"/course-info/ai-with-py\",\n    \"parent\": \"634599e2d4a59348b0c6e2b0\"\n}"
+		},
+		{
+			"id": "7c246394-d0e9-8ab0-cefd-1a88e90de6eb",
+			"name": "register",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"method": "POST",
+			"helperAttributes": {},
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n    \"title\": \"{{$randomFullName}}\"\n}",
+			"pathVariables": {
+				"id": "63443b224a62cea9942aec51"
+			},
+			"url": "{{baseUrl}}/courses/:id/register",
+			"responses": [],
+			"pathVariableData": [
+				{
+					"key": "id",
+					"value": "63443b224a62cea9942aec51"
+				}
+			],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "2138de73-8016-2ff2-0063-729577c7175c",
+			"folder": "6b9acd8f-fd31-1296-811f-86052fdd8aa9"
+		},
+		{
+			"id": "7d4e8c2f-f342-ee2f-1159-221c1337534b",
+			"name": "Create Session",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"method": "POST",
+			"helperAttributes": {},
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n    \"title\": \"{{$randomFullName}}\"\n}",
+			"pathVariables": {
+				"id": "63443b224a62cea9942aec51"
+			},
+			"url": "{{baseUrl}}/courses/:id/sessions",
+			"responses": [],
+			"pathVariableData": [
+				{
+					"key": "id",
+					"value": "63443b224a62cea9942aec51"
+				}
+			],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "2138de73-8016-2ff2-0063-729577c7175c",
+			"folder": "6b9acd8f-fd31-1296-811f-86052fdd8aa9"
+		},
+		{
+			"id": "7da605b0-1b3b-25a7-d4d8-e983a51d67ff",
+			"name": "Login",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"method": "POST",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n    \"identifier\": \"Mollie.Strosin83\",\n    \"password\": \"123456\"\n}",
+			"tests": "if(pm.response.code == 200) {\n    pm.collectionVariables.set('accessToken', pm.response.json().accessToken)\n}",
+			"preRequestScript": "",
+			"url": "{{baseUrl}}/auth/login",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "2138de73-8016-2ff2-0063-729577c7175c",
+			"folder": "8620ae36-93b1-1214-15f6-9ca11ed5cc6c"
+		},
+		{
+			"id": "83118a2a-a1d6-ff3b-6f38-71d88953fa99",
+			"name": "Create",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"method": "POST",
+			"helperAttributes": {},
+			"headers": "",
+			"dataMode": "params",
+			"data": [
+				{
+					"key": "name",
+					"value": "{{$randomFullName}} Course",
+					"type": "text"
+				},
+				{
+					"key": "description",
+					"value": "{{$randomLoremSentences}}",
+					"type": "text"
+				},
+				{
+					"key": "cover",
+					"type": "file",
+					"src": "/home/mamad/Documents/MySocialMedia/ProfilePictureMySelf-min.jpg",
+					"value": ""
+				}
+			],
+			"rawModeData": "",
+			"url": "{{baseUrl}}/courses",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "2138de73-8016-2ff2-0063-729577c7175c",
+			"folder": "6b9acd8f-fd31-1296-811f-86052fdd8aa9"
+		},
+		{
+			"id": "8801fd5d-f106-7fdd-309f-faf18916240c",
+			"name": "All",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"method": "GET",
+			"helperAttributes": {},
+			"headers": "",
+			"data": [],
+			"rawModeData": "",
+			"url": "{{baseUrl}}/courses",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "2138de73-8016-2ff2-0063-729577c7175c",
+			"folder": "6b9acd8f-fd31-1296-811f-86052fdd8aa9"
+		},
+		{
+			"id": "8be7816a-672a-b968-bbcf-50c2272e5f0c",
+			"name": "Me",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"method": "GET",
+			"helperAttributes": {},
+			"headers": "",
+			"data": [],
+			"rawModeData": "",
+			"url": "{{baseUrl}}/auth/me",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "2138de73-8016-2ff2-0063-729577c7175c",
+			"folder": "8620ae36-93b1-1214-15f6-9ca11ed5cc6c"
+		},
+		{
+			"id": "b2f9f3e9-666e-8d30-5e67-abd6a5ed3652",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{baseUrl}}/courses/:shortName",
+			"folder": "6b9acd8f-fd31-1296-811f-86052fdd8aa9",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {
+				"shortName": ""
+			},
+			"pathVariableData": [
+				{
+					"key": "shortName",
+					"value": ""
+				}
+			],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1665700823972,
+			"name": "one",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"responses": [],
+			"rawModeData": "{\n    \"courseID\": \"{{$randomCourseID}}\"\n}"
+		},
+		{
+			"id": "b93d9d10-9e05-53a1-b6b0-10b5f420550f",
+			"name": "All",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"method": "GET",
+			"headers": "",
+			"data": [],
+			"rawModeData": "",
+			"url": "{{baseUrl}}/menus",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "2138de73-8016-2ff2-0063-729577c7175c",
+			"folder": "fd99405f-c861-d7f5-a70c-b3c9b3ba9f53"
+		},
+		{
+			"id": "bde7a3a1-cdd8-6de4-4bc3-c7c69ee376bf",
+			"name": "Create",
+			"description": "",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"method": "POST",
+			"helperAttributes": {},
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n    \"title\": \"زیر منوی اول منوی دوم\",\n    \"href\": \"/second/first\",\n    \"parent\": \"63445696bd0f8150900202e9\"\n}",
+			"url": "{{baseUrl}}/menus",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "2138de73-8016-2ff2-0063-729577c7175c",
+			"folder": "fd99405f-c861-d7f5-a70c-b3c9b3ba9f53"
+		},
+		{
+			"id": "fe75aa7f-91ca-4d12-0e1c-05e2b5a5930b",
+			"headers": "Authorization: user token\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "user token",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{baseUrl}}/articles/:shortName",
+			"queryParams": [],
+			"pathVariables": {
+				"shortName": ""
+			},
+			"pathVariableData": [
+				{
+					"key": "shortName",
+					"value": ""
+				}
+			],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "2138de73-8016-2ff2-0063-729577c7175c",
+			"data": null,
+			"dataMode": "params",
+			"name": "one",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1665700800537,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "89b153e4-7fd4-78a9-782a-5477a4b0eccc"
+		}
+	]
+}
+)
+backend / server.js (
+    const dotenv = require('dotenv');
+const { default: mongoose } = require('mongoose');
+
+dotenv.config();
+
+const app = require('./app');
+
+const port = +process.env.PORT;
+
+(async () => {
+  await mongoose.connect(process.env.MONGO_URI);
+  console.log('mongodb connected.');
+})();
+
+app.listen(port, () => {
+  console.log(`server running on port ${port}`);
+});
+
+)
+
+/// finish backend file \\\
+
+/// start backend database \\\
+
+courses: ({
+    "_id" : ObjectId("6345cda6474f74e04218f6f7"),
+    "name" : "دوره پیشرفته Node.js | معماری میکروسرویس و DevOps",
+    "description" : "آموزش Node.js 20 با تمرکز بر معماری‌های مدرن شامل میکروسرویس، Event-Driven Architecture، Dockerize و CI/CD. پروژه‌های واقعی مانند سیستم پرداخت، چت Real-Time و API Gateway.",
+    "cover" : "/courses/node-advanced.png",
+    "shortName" : "node_expert",
+    "categoryID" : ObjectId("6345cc0a32c10de974957635"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-02-01T07:30:00.000+0000"),
+    "updatedAt" : ISODate("1404-04-01T07:30:00.000+0000"),
+    "__v" : NumberInt(2),
+    "courseRequire" : "JavaScript + Linux Basics",
+    "courseTime" : NumberInt(90),
+    "courseViewType" : "آنلاین پروژه‌محور",
+    "isComplated" : NumberInt(1),
+    "shortLink" : "node-devops",
+    "studentCount" : NumberInt(9200),
+    "supportProcess" : "پشتیبانی VIP",
+    "view" : NumberInt(78500),
+    "off" : NumberInt(35),
+    "price" : NumberInt(6500000),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae57",
+            "body" : "آموزش Dockerize و Kubernetes عالی بود",
+            "course" : "6345cda6474f74e04218f6f7",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-03-15T11:30:00.000Z",
+            "updatedAt" : "2025-03-15T11:30:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545335",
+            "title" : "Event-Driven با RabbitMQ",
+            "course" : "6345cda6474f74e04218f6f7",
+            "createdAt" : "2025-02-10T08:00:00.000Z",
+            "updatedAt" : "2025-02-15T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545336",
+            "title" : "پیاده‌سازی CI/CD با GitHub Actions",
+            "course" : "6345cda6474f74e04218f6f7",
+            "createdAt" : "2025-02-20T08:00:00.000Z",
+            "updatedAt" : "2025-02-25T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345ce0507603939bc74ea41"),
+    "name" : "آموزش ری اکت (ReactJS) پیشرفته | از صفر تا توسعه اپلیکیشن‌های سازمانی",
+    "description" : "حدود 120 ساعت آموزش جامع React 18 با آخرین ویژگی‌ها شامل Hooks پیشرفته، TypeScript، تست‌نویسی و معماری Enterprise. پروژه‌های واقعی مانند سیستم مدیریت محتوا، پلتفرم تجارت الکترونیک و شبکه اجتماعی.",
+    "cover" : "/courses/react-advanced.jpg",
+    "shortName" : "react_expert ",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-01-01T08:00:00.000+0000"),
+    "updatedAt" : ISODate("1404-03-01T08:00:00.000+0000"),
+    "__v" : NumberInt(1),
+    "courseRequire" : "JavaScript ES6+",
+    "courseTime" : NumberInt(120),
+    "courseViewType" : "آنلاین تعاملی",
+    "isComplated" : NumberInt(1),
+    "shortLink" : "react-pro",
+    "studentCount" : NumberInt(15400),
+    "supportProcess" : "مشاوره تخصصی + انجمن",
+    "view" : NumberInt(120500),
+    "off" : NumberInt(40),
+    "price" : NumberInt(8500000),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae55",
+            "body" : "بهترین دوره ری اکت فارسی با معماری Enterprise",
+            "course" : "6345ce0507603939bc74ea41",
+            "creator" : {
+                "_id" : "6826ee7c992a736f48813bda",
+                "username" : "mohammadiko",
+                "name" : "محمدیکو"
+            },
+            "createdAt" : "2025-04-10T14:20:00.000Z",
+            "updatedAt" : "2025-04-10T14:20:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae56",
+            "body" : "آموزش تست‌نویسی حرفه‌ای عالی بود",
+            "course" : "6345ce0507603939bc74ea41",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-04-12T09:15:00.000Z",
+            "updatedAt" : "2025-04-12T09:15:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545333",
+            "title" : "مدیریت State با Redux Toolkit",
+            "course" : "6345ce0507603939bc74ea41",
+            "createdAt" : "2025-01-05T08:00:00.000Z",
+            "updatedAt" : "2025-01-10T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545334",
+            "title" : "آزمون E2E با Cypress",
+            "course" : "6345ce0507603939bc74ea41",
+            "createdAt" : "2025-01-15T08:00:00.000Z",
+            "updatedAt" : "2025-01-20T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345cfc7586b68648f7f2430"),
+    "name" : "مدیریت پیشرفته پکیج‌ها با NPM و Yarn",
+    "description" : "آموزش حرفه‌ای مدیریت وابستگی‌ها شامل: Workspaces، Monorepo، انتشار Private Packages، Audit امنیتی و بهینه‌سازی Buildها",
+    "cover" : "/courses/npm-pro.webp",
+    "shortName" : "npm",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-03-01T10:00:00.000+0000"),
+    "updatedAt" : ISODate("1404-05-01T10:00:00.000+0000"),
+    "__v" : NumberInt(3),
+    "courseRequire" : "JavaScript + Terminal",
+    "courseTime" : NumberInt(8),
+    "courseViewType" : "فشرده آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(10),
+    "price" : NumberInt(1800000),
+    "shortLink" : "npm-pro",
+    "studentCount" : NumberInt(18500),
+    "supportProcess" : "پشتیبانی فنی",
+    "view" : NumberInt(65400),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae58",
+            "body" : "آموزش Monorepo دقیقاً چیزی بود که نیاز داشتم",
+            "course" : "6345cfc7586b68648f7f2430",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-05-05T16:45:00.000Z",
+            "updatedAt" : "2025-05-05T16:45:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545337",
+            "title" : "مدیریت Monorepo با Lerna",
+            "course" : "6345cfc7586b68648f7f2430",
+            "createdAt" : "2025-03-10T08:00:00.000Z",
+            "updatedAt" : "2025-03-15T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545338",
+            "title" : "امنیت پکیج‌ها با Audit",
+            "course" : "6345cfc7586b68648f7f2430",
+            "createdAt" : "2025-03-17T08:00:00.000Z",
+            "updatedAt" : "2025-03-22T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345d3c7586b68648f7f2a1d"),
+    "name" : "آموزش Css",
+    "description" : "آموزش کامل CSS3 شامل Flexbox، Grid، انیمیشن‌ها و طراحی ریسپانسیو",
+    "cover" : "/courses/css3_pro.png",
+    "shortName" : "css-course ",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-03-05T08:30:00.000+0000"),
+    "updatedAt" : ISODate("1404-03-25T08:30:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "آشنایی با HTML",
+    "courseTime" : NumberInt(30),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(20),
+    "price" : NumberInt(1800000),
+    "shortLink" : "css-pro",
+    "studentCount" : NumberInt(9500),
+    "supportProcess" : "پشتیبانی فنی",
+    "view" : NumberInt(42000),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae4d",
+            "body" : "آموزش Grid عالی بود!",
+            "course" : "6345d3c7586b68648f7f2a1d",
+            "creator" : {
+                "_id" : "6826ee7c992a736f48813bda",
+                "username" : "mohammadiko",
+                "name" : "محمدیکو"
+            },
+            "createdAt" : "2025-04-05T16:45:00.000Z",
+            "updatedAt" : "2025-04-05T16:45:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545321",
+            "title" : "Flexbox و Positioning",
+            "course" : "6345d3c7586b68648f7f2a1d",
+            "createdAt" : "2025-03-10T08:00:00.000Z",
+            "updatedAt" : "2025-03-15T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545322",
+            "title" : "CSS Grid پیشرفته",
+            "course" : "6345d3c7586b68648f7f2a1d",
+            "createdAt" : "2025-03-17T08:00:00.000Z",
+            "updatedAt" : "2025-03-22T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345daf7586b68648f7f2a24"),
+    "name" : "آموزش داکر",
+    "description" : "آموزش جامع Docker و Docker Compose شامل کانتینرایزیشن، مدیریت Imageها و Deployment",
+    "cover" : "/courses/docker-pro.webp",
+    "shortName" : "docker",
+    "categoryID" : ObjectId("6345cc0a32c10de974957635"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-06-01T11:10:00.000+0000"),
+    "updatedAt" : ISODate("1404-06-20T11:10:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "آشنایی با لینوکس",
+    "courseTime" : NumberInt(18),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(30),
+    "price" : NumberInt(4200000),
+    "shortLink" : "docker-master",
+    "studentCount" : NumberInt(3200),
+    "supportProcess" : "پشتیبانی تخصصی",
+    "view" : NumberInt(12800),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae53",
+            "body" : "آموزش Deployment عالی بود",
+            "course" : "6345daf7586b68648f7f2a24",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-07-01T09:45:00.000Z",
+            "updatedAt" : "2025-07-01T09:45:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545331",
+            "title" : "مبانی کانتینرایزیشن",
+            "course" : "6345daf7586b68648f7f2a24",
+            "createdAt" : "2025-06-05T08:00:00.000Z",
+            "updatedAt" : "2025-06-10T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545332",
+            "title" : "Docker Swarm در عمل",
+            "course" : "6345daf7586b68648f7f2a24",
+            "createdAt" : "2025-06-12T08:00:00.000Z",
+            "updatedAt" : "2025-06-17T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345d2b7586b68648f7f2a1c"),
+    "name" : "آموزش Html",
+    "description" : "آموزش کامل HTML5 با تمرکز بر ساختار سمانتیک، فرم‌های پیشرفته و انطباق با استانداردهای W3C",
+    "cover" : "/courses/html5_master.png",
+    "shortName" : "html",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-02-15T10:00:00.000+0000"),
+    "updatedAt" : ISODate("1404-03-01T10:00:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "ندارد",
+    "courseTime" : NumberInt(18),
+    "courseViewType" : "دانلودی/آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(10),
+    "price" : NumberInt(750000),
+    "shortLink" : "html-pro",
+    "studentCount" : NumberInt(12450),
+    "supportProcess" : "پشتیبانی فنی",
+    "view" : NumberInt(38500),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae4b",
+            "body" : "آموزش بسیار روان و ساختارمند",
+            "course" : "6345d2b7586b68648f7f2a1c",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-03-20T09:45:00.000Z",
+            "updatedAt" : "2025-03-20T09:45:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae4c",
+            "body" : "مناسب برای شروع طراحی وب",
+            "course" : "6345d2b7586b68648f7f2a1c",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-03-21T11:20:00.000Z",
+            "updatedAt" : "2025-03-21T11:20:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545319",
+            "title" : "ساختار سمانتیک HTML5",
+            "course" : "6345d2b7586b68648f7f2a1c",
+            "createdAt" : "2025-03-01T08:00:00.000Z",
+            "updatedAt" : "2025-03-05T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545320",
+            "title" : "فرم‌های پیشرفته و اعتبارسنجی",
+            "course" : "6345d2b7586b68648f7f2a1c",
+            "createdAt" : "2025-03-08T08:00:00.000Z",
+            "updatedAt" : "2025-03-12T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345d1a7586b68648f7f2a1b"),
+    "name" : "آموزش جامع جاوا اسکریپت",
+    "description" : "دوره کامل از مفاهیم پایه تا پیشرفته شامل ES6+، Async/Await، APIها و پروژه‌های واقعی",
+    "cover" : "/courses/js_master.webp",
+    "shortName" : "js-expert",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-03-01T09:15:00.000+0000"),
+    "updatedAt" : ISODate("1404-03-20T09:15:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "آشنایی با مبانی برنامه‌نویسی",
+    "courseTime" : NumberInt(45),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(15),
+    "price" : NumberInt(4200000),
+    "shortLink" : "js-pro",
+    "studentCount" : NumberInt(18700),
+    "supportProcess" : "آنلاین 24/7",
+    "view" : NumberInt(67500),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae49",
+            "body" : "بهترین منبع یادگیری جاوااسکریپت به زبان فارسی!",
+            "course" : "6345d1a7586b68648f7f2a1b",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-04-01T14:30:00.000Z",
+            "updatedAt" : "2025-04-01T14:30:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae4a",
+            "body" : "پروژه‌های عملی عالی داشت",
+            "course" : "6345d1a7586b68648f7f2a1b",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-04-02T10:15:00.000Z",
+            "updatedAt" : "2025-04-02T10:15:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545317",
+            "title" : "مفاهیم پایه و انواع داده",
+            "course" : "6345d1a7586b68648f7f2a1b",
+            "createdAt" : "2025-03-05T08:00:00.000Z",
+            "updatedAt" : "2025-03-10T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545318",
+            "title" : "کار با DOM پیشرفته",
+            "course" : "6345d1a7586b68648f7f2a1b",
+            "createdAt" : "2025-03-12T08:00:00.000Z",
+            "updatedAt" : "2025-03-17T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345d7e7586b68648f7f2a21"),
+    "name" : "آموزش ویو جی اس",
+    "description" : "دوره پروژه‌محور Vue.js 3 شامل Composition API، Vue Router، Vuex و интеграция با Backend",
+    "cover" : "/courses/vue3.png",
+    "shortName" : "vuejs",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-04-10T10:30:00.000+0000"),
+    "updatedAt" : ISODate("1404-05-01T10:30:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "JavaScript & HTML",
+    "courseTime" : NumberInt(35),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(20),
+    "price" : NumberInt(3200000),
+    "shortLink" : "vue3-pro",
+    "studentCount" : NumberInt(8700),
+    "supportProcess" : "پشتیبانی ویدیویی",
+    "view" : NumberInt(29500),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae50",
+            "body" : "بهترین آموزش ویو ۳ به فارسی",
+            "course" : "6345d7e7586b68648f7f2a21",
+            "creator" : {
+                "_id" : "6826ee7c992a736f48813bda",
+                "username" : "mohammadiko",
+                "name" : "محمدیکو"
+            },
+            "createdAt" : "2025-05-05T12:15:00.000Z",
+            "updatedAt" : "2025-05-05T12:15:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545325",
+            "title" : "مبانی Composition API",
+            "course" : "6345d7e7586b68648f7f2a21",
+            "createdAt" : "2025-04-15T08:00:00.000Z",
+            "updatedAt" : "2025-04-20T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545326",
+            "title" : "مدیریت State با Pinia",
+            "course" : "6345d7e7586b68648f7f2a21",
+            "createdAt" : "2025-04-22T08:00:00.000Z",
+            "updatedAt" : "2025-04-27T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345d6f7586b68648f7f2a20"),
+    "name" : "آموزش بوت استرپ",
+    "description" : "آموزش کامل فریمورک Bootstrap 5 با تمرکز بر کامپوننت‌های مدرن، سیستم گرید پیشرفته و ریسپانسیو سازی",
+    "cover" : "/courses/bootstrap5.webp",
+    "shortName" : "bootstrap",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-04-01T08:00:00.000+0000"),
+    "updatedAt" : ISODate("1404-04-20T08:00:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "HTML & CSS",
+    "courseTime" : NumberInt(22),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(15),
+    "price" : NumberInt(1800000),
+    "shortLink" : "bs5-pro",
+    "studentCount" : NumberInt(11200),
+    "supportProcess" : "پشتیبانی تیکت",
+    "view" : NumberInt(38500),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae4e",
+            "body" : "سیستم گرید عالی توضیح داده شد",
+            "course" : "6345d6f7586b68648f7f2a20",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-05-01T14:20:00.000Z",
+            "updatedAt" : "2025-05-01T14:20:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae4f",
+            "body" : "کامپوننت‌های مدرن عالی بودن",
+            "course" : "6345d6f7586b68648f7f2a20",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-05-02T09:45:00.000Z",
+            "updatedAt" : "2025-05-02T09:45:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545323",
+            "title" : "کار با سیستم گرید پیشرفته",
+            "course" : "6345d6f7586b68648f7f2a20",
+            "createdAt" : "2025-04-05T08:00:00.000Z",
+            "updatedAt" : "2025-04-10T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545324",
+            "title" : "کاستومایز تم با Sass",
+            "course" : "6345d6f7586b68648f7f2a20",
+            "createdAt" : "2025-04-12T08:00:00.000Z",
+            "updatedAt" : "2025-04-17T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345dcf7586b68648f7f2a26"),
+    "name" : "آموزش جامع پایتون",
+    "description" : "دوره کامل Python 3 از مفاهیم پایه تا پیشرفته شامل شی‌گرایی، کار با داده‌ها، توسعه وب با Django/Flask و اتوماسیون",
+    "cover" : "/courses/python-pro.png",
+    "shortName" : "py-expert",
+    "categoryID" : ObjectId("6345cc0a32c10de974957635"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-07-01T09:00:00.000+0000"),
+    "updatedAt" : ISODate("1404-08-15T09:00:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "مبانی برنامه‌نویسی",
+    "courseTime" : NumberInt(60),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(25),
+    "price" : NumberInt(5500000),
+    "shortLink" : "python-pro",
+    "studentCount" : NumberInt(23400),
+    "supportProcess" : "پشتیبانی VIP + انجمن",
+    "view" : NumberInt(98500),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae59",
+            "body" : "بهترین منبع یادگیری پایتون به فارسی!",
+            "course" : "6345dcf7586b68648f7f2a26",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-08-10T14:30:00.000Z",
+            "updatedAt" : "2025-08-10T14:30:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae5a",
+            "body" : "آموزش Django واقعاً حرفه‌ای بود",
+            "course" : "6345dcf7586b68648f7f2a26",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-08-12T11:15:00.000Z",
+            "updatedAt" : "2025-08-12T11:15:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545339",
+            "title" : "مبانی پایتون و ساختار داده‌ها",
+            "course" : "6345dcf7586b68648f7f2a26",
+            "createdAt" : "2025-07-05T08:00:00.000Z",
+            "updatedAt" : "2025-07-10T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545340",
+            "title" : "توسعه وب با Django REST Framework",
+            "course" : "6345dcf7586b68648f7f2a26",
+            "createdAt" : "2025-07-15T08:00:00.000Z",
+            "updatedAt" : "2025-07-20T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345def7586b68648f7f2a28"),
+    "name" : "پروژه‌های تخصصی با جاوااسکریپت",
+    "description" : "پیاده‌سازی ۱۰ پروژه واقعی از انواع اپلیکیشن‌های مدرن شامل سیستم مدیریت محتوا، پلتفرم تجارت الکترونیک، ابزارهای تحلیلی و برنامه‌های Real-Time با معماری‌های پیشرفته",
+    "cover" : "/courses/js-projects.png",
+    "shortName" : "js-projects",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-09-01T10:00:00.000+0000"),
+    "updatedAt" : ISODate("1404-10-15T10:00:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "جاوااسکریپت پیشرفته + React/Node",
+    "courseTime" : NumberInt(80),
+    "courseViewType" : "پروژه‌محور تعاملی",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(20),
+    "price" : NumberInt(7500000),
+    "shortLink" : "js-realworld",
+    "studentCount" : NumberInt(12500),
+    "supportProcess" : "مشاوره فنی + کدریویو",
+    "view" : NumberInt(58700),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae5b",
+            "body" : "پروژه تجارت الکترونیک دقیقاً شبیه بازار کار بود!",
+            "course" : "6345def7586b68648f7f2a28",
+            "creator" : {
+                "_id" : "6826ee7c992a736f48813bda",
+                "username" : "mohammadiko",
+                "name" : "محمدیکو"
+            },
+            "createdAt" : "2025-10-05T15:45:00.000Z",
+            "updatedAt" : "2025-10-05T15:45:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae5c",
+            "body" : "آموزش WebSockets برای چت Real-Time عالی بود",
+            "course" : "6345def7586b68648f7f2a28",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-10-08T11:20:00.000Z",
+            "updatedAt" : "2025-10-08T11:20:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545341",
+            "title" : "سیستم پرداخت با Stripe API",
+            "course" : "6345def7586b68648f7f2a28",
+            "createdAt" : "2025-09-10T08:00:00.000Z",
+            "updatedAt" : "2025-09-15T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545342",
+            "title" : "بهینه‌سازی عملکرد با Web Workers",
+            "course" : "6345def7586b68648f7f2a28",
+            "createdAt" : "2025-09-20T08:00:00.000Z",
+            "updatedAt" : "2025-09-25T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ],
+    "projects" : [
+        {
+            "title" : "پلتفرم تجارت الکترونیک",
+            "techStack" : [
+                "React",
+                "Node.js",
+                "MongoDB",
+                "Stripe"
+            ],
+            "features" : [
+                "پرداخت آنلاین",
+                "مدیریت موجودی",
+                "سیستم نظر دهی"
+            ]
+        },
+        {
+            "title" : "ابزار تحلیل داده Real-Time",
+            "techStack" : [
+                "WebSockets",
+                "Chart.js",
+                "Express"
+            ],
+            "features" : [
+                "نمایش زنده داده",
+                "خروجی PDF",
+                "هشدار لحظه‌ای"
+            ]
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345e0f7586b68648f7f2a29"),
+    "name" : "آموزش جامع جنگو | توسعه وب حرفه‌ای با پایتون",
+    "description" : "دوره کامل Django 4 از مفاهیم پایه تا توسعه اپلیکیشن‌های سازمانی شامل معماری MVT، Django REST Framework، سیستم احراز هویت پیشرفته و پیاده‌سازی پروژه‌های واقعی مانند سیستم بلاگ، فروشگاه آنلاین و پلتفرم مدیریت محتوا",
+    "cover" : "/courses/django-pro.png",
+    "shortName" : "django-pro",
+    "categoryID" : ObjectId("6345cc0a32c10de974957635"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-11-01T08:30:00.000+0000"),
+    "updatedAt" : ISODate("1405-01-15T08:30:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "پایتون متوسط + HTML/CSS",
+    "courseTime" : NumberInt(65),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(30),
+    "price" : NumberInt(6800000),
+    "shortLink" : "django-master",
+    "studentCount" : NumberInt(9800),
+    "supportProcess" : "پشتیبانی فنی + انجمن",
+    "view" : NumberInt(45600),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae5d",
+            "body" : "بهترین آموزش جنگو به زبان فارسی با پروژه‌های واقعی",
+            "course" : "6345e0f7586b68648f7f2a29",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-12-10T13:15:00.000Z",
+            "updatedAt" : "2025-12-10T13:15:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae5e",
+            "body" : "آموزش REST Framework واقعاً کاربردی بود",
+            "course" : "6345e0f7586b68648f7f2a29",
+            "creator" : {
+                "_id" : "6826ee7c992a736f48813bda",
+                "username" : "mohammadiko",
+                "name" : "محمدیکو"
+            },
+            "createdAt" : "2025-12-12T10:45:00.000Z",
+            "updatedAt" : "2025-12-12T10:45:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545343",
+            "title" : "معماری MVT و ORM پیشرفته",
+            "course" : "6345e0f7586b68648f7f2a29",
+            "createdAt" : "2025-11-10T08:00:00.000Z",
+            "updatedAt" : "2025-11-15T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545344",
+            "title" : "پیاده‌سازی API با DRF",
+            "course" : "6345e0f7586b68648f7f2a29",
+            "createdAt" : "2025-11-20T08:00:00.000Z",
+            "updatedAt" : "2025-11-25T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ],
+    "projects" : [
+        {
+            "title" : "سیستم مدیریت محتوای سازمانی",
+            "techStack" : [
+                "Django",
+                "PostgreSQL",
+                "Celery"
+            ],
+            "features" : [
+                "ویرایشگر WYSIWYG",
+                "تایید چندمرحله‌ای محتوا",
+                "گزارش‌گیری پیشرفته"
+            ]
+        },
+        {
+            "title" : "فروشگاه اینترنتی",
+            "techStack" : [
+                "Django",
+                "Stripe",
+                "Redis"
+            ],
+            "features" : [
+                "پنل مدیریت پیشرفته",
+                "پرداخت آنلاین",
+                "سیستم تخفیف هوشمند"
+            ]
+        }
+    ]
+}
+)
+
+users: ({
+    "_id" : ObjectId("6826ee7c992a736f48813bda"),
+    "username" : "mohammadiko",
+    "email" : "mohammadiko@gmail.com",
+    "password" : "$2b$12$aj8rjwHZi0FABosCjgH9Qe..EYGek9wyLr32eX13n7pKwiEJY4xH.",
+    "name" : "محمدیکو",
+    "role" : "ADMIN",
+    "createdAt" : ISODate("2025-05-16T07:51:24.532+0000"),
+    "updatedAt" : ISODate("2025-05-16T07:51:24.532+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("68271d7664140681e82cf39c"),
+    "username" : "amirQuff",
+    "email" : "amirQuf@gmail.com",
+    "password" : "$2b$12$RIzMuG.awVItRHDBnZNu7uSlhh6oAMDgUIUoKkaTRES7sL48gxt56",
+    "name" : "امیر قاف",
+    "role" : "USER",
+    "createdAt" : ISODate("2025-05-16T11:11:50.653+0000"),
+    "updatedAt" : ISODate("2025-05-16T11:11:50.653+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6827228e64140681e82cf3e3"),
+    "username" : "rezaZendadel",
+    "email" : "reza@gmail.com",
+    "password" : "$2b$12$punnifZoKOQRlk.T5A/DUe1IOiPTaBlop0UPxLYI1tX59q.U7Mjt2",
+    "name" : "رضا زنده دل",
+    "role" : "USER",
+    "createdAt" : ISODate("2025-05-16T11:33:34.281+0000"),
+    "updatedAt" : ISODate("2025-05-16T11:33:34.281+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6827232164140681e82cf3ea"),
+    "username" : "mickelbar",
+    "email" : "mickel@gmail.com",
+    "password" : "$2b$12$lohUNxVIWzcR.hVTuuovJ.FSNeTdX.RXYQT6PTJPc5LrRa/6NjT1S",
+    "name" : "مایکل بر",
+    "role" : "USER",
+    "createdAt" : ISODate("2025-05-16T11:36:01.320+0000"),
+    "updatedAt" : ISODate("2025-05-16T11:36:01.320+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("682738711484f9d6cb89d11c"),
+    "username" : "mohammadi",
+    "email" : "mohammadi@gmail.com",
+    "password" : "$2b$12$u1ghdctgFX/CWbK836AwueypD12JoCyE3VYBlaJdChMos.89tSe8.",
+    "name" : "محمد محمدی",
+    "role" : "USER",
+    "createdAt" : ISODate("2025-05-16T13:06:57.063+0000"),
+    "updatedAt" : ISODate("2025-05-16T13:06:57.063+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6827882ca595e71e89dec2e4"),
+    "username" : "rezaVaziry",
+    "email" : "rezaVazir@gmail.com",
+    "password" : "$2b$12$sCwOb0Wo8knYYjW0j41BM.HxGLMEh0gDMVLvP/A6NVRgDLLzDnhFS",
+    "name" : "رضا وزیری",
+    "role" : "USER",
+    "createdAt" : ISODate("2025-05-16T18:47:08.251+0000"),
+    "updatedAt" : ISODate("2025-05-16T18:47:08.251+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6828761f4b145ce04644a6e1"),
+    "username" : "leach_mob",
+    "email" : "leachMob@gmail.com",
+    "password" : "$2b$12$wzRsS/ItMBOLsWVWU.RBJOKqHM.fQZECGnJn73Exq9iSIi8dcx4LO",
+    "name" : "لیچ ماب",
+    "role" : "USER",
+    "createdAt" : ISODate("2025-05-17T11:42:23.756+0000"),
+    "updatedAt" : ISODate("2025-05-17T11:42:23.756+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("682ec57b21975475ebacdf53"),
+    "username" : "ice cube",
+    "email" : "iceCube@gmail.com",
+    "password" : "$2b$12$A5b3B3dKmjoGEGvMjF6m9uGOOj4MqMJYWtn/mCphObVK6FQq/PZKq",
+    "name" : "ایس کیوب",
+    "role" : "USER",
+    "createdAt" : ISODate("2025-05-22T06:34:35.399+0000"),
+    "updatedAt" : ISODate("2025-05-22T06:34:35.399+0000"),
+    "__v" : NumberInt(0)
+}
+)
+
+articles : (
+{
+    "_id" : ObjectId("63488b82c62abbaa2dd4daeb"),
+    "title" : "مقایسه ویو و ری اکت",
+    "description" : "در سال 2025، Vue 4.5 و React 19 تحولات چشمگیری را تجربه کرده‌اند. Vue با معماری ترکیبات (Composition API) پیشرفته و پشتیبانی داخلی از TypeScript، توسعه برنامه‌های پیچیده را ساده‌تر کرده است. از سوی دیگر، React با معرفی ویژگی‌هایی مانند کامپایلر هوشمند (React Forge) و مدیریت خودکار حالت (Auto-State) عملکرد بی‌سابقه‌ای ارائه می‌دهد. این چکیده به مقایسه فنی، اکوسیستم و کارایی این دو فریمورک در پروژه‌های سازمانی می‌پردازد.",
+    "body" : "### بخش ۱: معماری هسته\nویو ۴.۵ با سیستم reactivity مبتنی بر Proxy عملکرد 40% سریع‌تری نسبت به نسخه‌های قبلی ارائه می‌دهد. ری‌اکت ۱۹ با معماری Fiber 2.0 و قابلیت Concurrent Rendering پیشرفته، پردازش غیرمسدودکننده را ممکن ساخته است.\n\n### بخش ۲: اکوسیستم 2025\n- **Vue**: Vite 5.0 + Pinia 3.0 + Nuxt 7\n  پشتیبانی پیشرفته از WebAssembly و WebGPU\n- **React**: Next.js 15 + Redux Toolkit 3.0\n  یکپارچه‌سازی با Web3 و کتابخانه‌های هوش مصنوعی\n\n### بخش ۳: معیارهای سازمانی\n| معیار          | Vue 4.5 | React 19 |\n|----------------|---------|----------|\n| زمان یادگیری   | ۲ هفته  | ۴ هفته   |\n| حجم باندل     | 45KB    | 78KB     |\n| پشتیبانی سازمانی | ۸۲%     | ۹۴%      |\n\n### نتیجه‌گیری\nVue برای استارتاپ‌ها و پروژه‌های متوسط با پیچیدگی متوسط گزینه ایده‌آل است، درحالی‌که React برای اپلیکیشن‌های سازمانی در مقیاس بزرگ با نیازهای پیچیده برتری دارد.",
+    "cover" : "/article/1vueVsReact.png",
+    "shortName" : "vue-vs-react",
+    "categoryID" : ObjectId("634889e625325a6b3d34f002"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : "1404-03-08T13:47:05.000+0000",
+    "updatedAt" : "1404-03-08T13:47:05.000+0000",
+    "__v" : NumberInt(0),
+    "rating" : 4.3
+},
+{
+    "_id" : ObjectId("63488bdbc62abbaa2dd4daf0"),
+    "title" : "فریمورک‌های جدید JS در 2025: انقلاب در توسعه وب",
+    "description" : "سال 2025 شاهد ظهور فریمورک‌های نوین جاوااسکریپتی مانند QuantumJS و Helix بوده‌است. QuantumJS با معماری مبتنی بر WebAssembly، عملکردی 3x سریع‌تر نسبت به React ارائه می‌دهد. از سوی دیگر، Helix با سیستم state management خودکار و پشتیبانی native از Web3 توجه بسیاری را جلب کرده‌است. تست‌های معیار نشان می‌دهند این فریمورک‌ها مصرف حافظه را تا 40% کاهش داده‌اند. با پشتیبانی شرکت‌هایی مانند Google و Microsoft، انتظار می‌رود این فناوری‌ها تا پایان سال 2025 سهم 25% از بازار را کسب کنند.",
+    "body" : "متن کامل تحلیل فریمورک‌های جدید...",
+    "cover" : "/article/2jsFreamwork.png",
+    "shortName" : "js-frameworks-2025",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-03-08T13:10:15.865+0000"),
+    "updatedAt" : ISODate("1404-03-08T13:10:15.865+0000"),
+    "__v" : NumberInt(0),
+    "rating" : 4.7
+},
+{
+    "_id" : ObjectId("63488bf5c62abbaa2dd4daf5"),
+    "title" : "همکاری انسان و AI در توسعه نرم‌افزار",
+    "description" : "ابزارهای هوش مصنوعی مانند GitHub Copilot X و Amazon CodeWhisperer Pro در سال 2025 به سطح بی‌سابقه‌ای از توانایی رسیده‌اند. این سیستم‌ها اکنون قادر به تولید 70% کدهای معمولی، دیباگ خودکار و حتی پیشنهاد معماری سیستم هستند. تحقیقات جدید نشان می‌دهد تیم‌هایی که از این ابزارها استفاده می‌کنند، 35% سریع‌تر به انتشار محصول می‌رسند. با این حال، چالش‌های جدیدی در زمینه امنیت کدهای تولیدشده و مسئولیت‌پذیری قانونی ظهور کرده‌است. شرکت‌های پیشرو در حال توسعه استانداردهای جدیدی برای استفاده اخلاقی از این فناوری هستند.",
+    "body" : "متن کامل بررسی ابزارهای AI...",
+    "cover" : "/article/3humanAi.jpg",
+    "shortName" : "ai-development-tools",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-03-08T13:12:30.421+0000"),
+    "updatedAt" : ISODate("1404-03-08T13:12:30.421+0000"),
+    "__v" : NumberInt(0),
+    "rating" : 4.3
+},
+{
+    "_id" : ObjectId("63488c0fc62abbaa2dd4dafa"),
+    "title" : "چالش‌های امنیتی در عصر Web3",
+    "description" : "با گسترش برنامه‌های غیرمتمرکز (dApps) و قراردادهای هوشمند، آسیب‌پذیری‌های جدیدی در اکوسیستم Web3 ظهور کرده‌است. در نیمه اول 2025، بیش از 2.3 میلیارد دلار سرمایه دیجیتال به دلیل باگ‌های امنیتی از دست رفته‌است. فناوری‌های نوین مانند زرو-نالج پرووف (ZKPs) و محاسبات همگن‌ساز (Homomorphic Encryption) به عنوان راهکارهای امیدبخش مطرح شده‌اند. ابزارهای تحلیل استاتیک جدید مانند MythX V3 و Securify 2.0 توانایی شناسایی 98% آسیب‌پذیری‌های رایج در قراردادهای هوشمند را دارا هستند. توسعه‌دهندگان ارشد باید مفاهیم جدید امنیتی مانند formal verification و fuzzing را در جریان کار روزمره خود ادغام کنند.",
+    "body" : "متن کامل تحلیل چالش‌های امنیتی...",
+    "cover" : "/article/4Security.jpg",
+    "shortName" : "web3-security-challenges",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-03-08T13:15:22.153+0000"),
+    "updatedAt" : ISODate("1404-03-08T13:15:22.153+0000"),
+    "__v" : NumberInt(0),
+    "rating" : 4.9
+},
+{
+    "_id" : ObjectId("665f1c8a3d4c9a7b12e8c7a4"),
+    "title" : "WebAssembly 2.0: اجرای کدهای سیستمی در مرورگر",
+    "description" : "نسخه جدید WebAssembly در سال 2025 امکان اجرای برنامه‌های سیستمی با عملکرد نزدیک به نیتیو را در مرورگرها فراهم کرده‌است. این فناوری با پشتیبانی از threading کامل، SIMD پیشرفته و دسترسی مستقیم به سخت‌افزار، تحولی در اجرای برنامه‌های سنگین مانند ویرایش ویدیو، بازی‌های سه‌بعدی و محاسبات علمی ایجاد کرده‌است. شرکت‌هایی مانند Adobe و Autodesk در حال انتقال نرم‌افزارهای حرفه‌ای خود به پلتفرم وب هستند. تست‌های عملکرد نشان می‌دهند برنامه‌های مبتنی بر WASM 2.0 تا 90% سریع‌تر از نسخه‌های جاوااسکریپتی اجرا می‌شوند.",
+    "body" : "متن کامل تحلیل WebAssembly 2.0...",
+    "cover" : "/article/5WebAssembly.png",
+    "shortName" : "webassembly-revolution",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : "1404-03-08T13:18:45.210+0000",
+    "updatedAt" : "1404-03-08T13:18:45.210+0000",
+    "rating" : 4.6,
+    "__v" : NumberInt(0)
+},
+{
+    "_id" : ObjectId("683864cfad33f66f8983625a"),
+    "title" : "سرورلس سازمانی: چالش‌ها و راهکارهای 2025",
+    "description" : "استقرار معماری سرورلس در سازمان‌های بزرگ با چالش‌های جدیدی همراه شده‌است. مسائلی مانند مدیریت حالت (state management)، ردیابی تراکنش‌های توزیعشده (distributed tracing) و امنیت چندلایه در محیط‌های هیبریدی از مهم‌ترین موضوعات سال 2025 هستند. راهکارهای نوینی مانند Stateful Serverless و Edge Computing Integration ظهور کرده‌اند که امکان اجرای پردازش‌های حساس به تأخیر را در نزدیک‌ترین نقطه به کاربر فراهم می‌کنند. ابزارهای مانیتورینگ پیشرفته مانند AWS Lambda Insight 3.0 و Azure Functions Monitor Pro نیز برای مدیریت این پیچیدگی‌ها طراحی شده‌اند.",
+    "body" : "متن کامل بررسی معماری سرورلس...",
+    "cover" : "/article/6EnterpriseServerless.png",
+    "shortName" : "enterprise-serverless",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : "1404-03-08T13:21:30.115+0000",
+    "updatedAt" : "1404-03-08T13:21:30.115+0000",
+    "rating" : 4.1,
+    "__v" : NumberInt(0)
+},
+{
+    "_id" : ObjectId("665f1ddc3d4c9a7b12e8c7a6"),
+    "title" : "AI-Ops: اتوماسیون هوشمند خطوط تولید نرم‌افزار",
+    "description" : "ادغام هوش مصنوعی در فرآیندهای DevOps تحولی اساسی در صنعت ایجاد کرده‌است. سیستم‌های AI-Ops در سال 2025 قادر به پیش‌بینی خطاها، بهینه‌سازی خودکار منابع و ارائه پیشنهادات اصلاحی برای کدها هستند. فناوری‌هایی مانند GitGuardian AI و Jenkins Cognition با تحلیل الگوهای تاریخی، تا 85% از خطاهای استقرار را کاهش می‌دهند. این سیستم‌ها همچنین با ارائه گزارش‌های تحلیلی پیشرفته، دید جامعی از سلامت سیستم را در اختیار تیم‌ها قرار می‌دهند. شرکت‌های پیشرو گزارش می‌دهند که استفاده از AI-Ops زمان انتشار نسخه‌ها را تا 40% کاهش داده‌است.",
+    "body" : "متن کامل بررسی AI-Ops...",
+    "cover" : "/article/7aiops.jpg",
+    "shortName" : "ai-powered-devops",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : "1404-03-08T13:24:15.876+0000",
+    "updatedAt" : "1404-03-08T13:24:15.876+0000",
+    "rating" : 4.4,
+    "__v" : NumberInt(0)
+},
+{
+    "_id" : ObjectId("665f1e853d4c9a7b12e8c7a7"),
+    "title" : "ابرهای ترکیبی 2025: یکپارچه‌سازی بی‌درنگ زیرساخت‌ها",
+    "description" : "راهکارهای ابری ترکیبی (Hybrid Cloud) در سال 2025 به سطح جدیدی از بلوغ رسیده‌اند. پلتفرم‌هایی مانند Azure Arc 3.0 و Google Anthos 2.5 امکان مدیریت یکپارچه منابع ابری عمومی، خصوصی و لبه‌ای را فراهم کرده‌اند. ویژگی‌های کلیدی شامل انتقال بی‌درنگ بارکاری (live migration)، سیاست‌های امنیتی یکسان و مانیتورینگ متمرکز هستند. تست‌های عملکرد نشان می‌دهند این سیستم‌ها تأخیر شبکه را تا 70% کاهش داده‌اند. سازمان‌هایی مانند بانک‌ها و مؤسسات بهداشتی که نیاز به انطباق با مقررات محلی دارند، بیشترین بهره را از این فناوری می‌برند.",
+    "body" : "متن کامل تحلیل ابرهای ترکیبی...",
+    "cover" : "/article/8HybridClouds.jpg",
+    "shortName" : "nextgen-hybrid-cloud",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : "1404-03-08T13:27:05.342+0000",
+    "updatedAt" : "1404-03-08T13:27:05.342+0000",
+    "rating" : 4.0,
+    "__v" : NumberInt(0)
+}
+)
+
+/// finish backend database \\\ 

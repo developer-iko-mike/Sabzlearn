@@ -1,0 +1,221 @@
+/* Start Footer Styles */
+
+.footer-widgets {
+  background-color: #f0f2f7;
+  border-radius: 1rem;
+  padding: 4rem 3.5rem;
+  position: relative;
+  margin-bottom: 5rem;
+}
+
+.footer-widgets::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: 0 auto;
+  height: 4rem;
+  width: 50rem;
+  background-color: var(--primary-color);
+  z-index: -1;
+  bottom: -1.5rem;
+  border-radius: 5rem;
+}
+
+.footer-widgets__title {
+  display: block;
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.footer-widgets__title::before {
+  content: "";
+  position: absolute;
+  width: 3.5rem;
+  height: 3.5rem;
+  background-color: var(--primary-color);
+  border-radius: 0.7rem;
+  right: 1rem;
+  opacity: 0.3;
+  transform: rotate(45deg);
+}
+
+.footer-widgets__text {
+  color: #7d7e7f;
+}
+
+.footer-widgets__links {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-widgets__link {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.footer__copyright {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f2f7;
+  padding: 3rem 0;
+}
+
+.footer__copyright-text {
+  color: var(--dark-color);
+  font-weight: bold;
+}
+
+.title::before {
+  content: "";
+  position: absolute;
+  right: -1rem;
+  width: 0.4rem;
+  height: 4.4rem;
+  border-radius: 5rem;
+  background-color: var(--primary-color);
+  transform: rotate(8deg);
+}
+.title::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 250px;
+  height: 60%;
+  background-color: rgba(43, 206, 86, 0.2);
+}
+
+.title {
+  font-size: 2.3rem;
+  color: #444446;
+  font-weight: bold;
+  line-height: 1.2;
+  position: relative;
+}
+
+.swiper-container {
+  height: 36rem;
+  cursor: grab;
+  overflow: hidden;
+}
+
+.swiper-pagination {
+  position: absolute;
+  bottom: -4rem !important;
+}
+.swiper-pagination-bullet {
+  width: 13px;
+  height: 13px;
+  transition: all 400ms ease;
+  opacity: 1 !important;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+}
+.swiper-pagination-bullet-active {
+  background-color: var(--primary-color);
+  transition: all 400ms ease;
+  opacity: 1 !important;
+  width: 35px !important;
+  border-radius: 10px;
+}
+
+/* Finish Footer Styles */
+
+/* Start Newsletter Form Styles */
+.footer-widgets__form {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.footer-widgets__input {
+  flex: 1;
+  padding: 1.2rem 1.5rem;
+  border: 1px solid #e0e0e2;
+  border-radius: 0.5rem 0 0 0.5rem;
+  font-family: var(--primary-font);
+  font-size: 1.4rem;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  width: 31rem;
+}
+
+.footer-widgets__input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(43, 206, 86, 0.2);
+}
+
+.footer-widgets__btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 1.2rem 2rem;
+  font-family: var(--primary-font);
+  font-size: 1.4rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 0.75rem 0.5rem 0.75rem 0.5rem;
+  margin-left: .4rem;
+}
+
+.footer-widgets__btn:hover {
+  background-color: #25b44e;
+  transform: translateY(-1px);
+}
+
+.footer-widgets__btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-widgets__form {
+    flex-direction: column;
+  }
+
+  .footer-widgets__input {
+    width: 100%;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .footer-widgets__btn {
+    width: 100%;
+    border-radius: 0.5rem;
+  }
+}
+
+/* Animation for form focus */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(43, 206, 86, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(43, 206, 86, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(43, 206, 86, 0);
+  }
+}
+
+.footer-widgets__form:focus-within {
+  animation: pulse 1.5s infinite;
+}
+
+.footerNewsLatterForm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Finish Newsletter Form Styles */

@@ -1,0 +1,22 @@
+{
+    "_id" : ObjectId("6345cfc7586b68648f7f2430"),
+    "name" : "آموزش NPM برای جاوااسکریپت کارها",
+    "description" : "این دوره آموزش جامع مدیریت پکیج‌ها با NPM و Yarn است، از نصب و تنظیم اولیه تا انتشار ماژول‌های شخصی. شما یاد می‌گیرید چگونه از کتابخانه‌های خارجی استفاده کنید، وابستگی‌ها را مدیریت کنید و اسکریپت‌های سفارشی بنویسید. این مهارت برای هر توسعه‌دهنده جاوااسکریپت ضروری است و بهره‌وری شما را افزایش می‌دهد.",
+    "cover" : "/courses/npm.webp",
+    "shortName" : "npm",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-01-28T20:19:19.749+0000"),
+    "updatedAt" : ISODate("1404-02-15T20:19:19.749+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "JavaScript",
+    "courseTime" : NumberInt(2),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(30),
+    "price" : NumberInt(14000),
+    "shortLink" : "78",
+    "studentCount" : NumberInt(25979),
+    "supportProcess" : "انلاین",
+    "view" : NumberInt(20000)
+}

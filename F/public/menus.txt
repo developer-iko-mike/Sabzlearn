@@ -1,0 +1,184 @@
+{
+    "_id" : ObjectId("6345987bd4a59348b0c6e2a7"),
+    "title" : "فرانت اند",
+    "href" : "/category-info/frontend",
+    "createdAt" : ISODate("2022-10-11T16:23:23.133+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:23:23.133+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("63459980d4a59348b0c6e2aa"),
+    "title" : "بک اند",
+    "href" : "/category-info/backend",
+    "createdAt" : ISODate("2022-10-11T16:27:44.210+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:27:44.210+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("634599e2d4a59348b0c6e2b0"),
+    "title" : "پایتون",
+    "href" : "/category-info/python",
+    "createdAt" : ISODate("2022-10-11T16:29:22.692+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:29:22.692+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("634599efd4a59348b0c6e2b3"),
+    "title" : "امنیت",
+    "href" : "/category-info/security",
+    "createdAt" : ISODate("2022-10-11T16:29:35.449+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:29:35.449+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("63459a20d4a59348b0c6e2b6"),
+    "title" : "مهارت های نرم",
+    "href" : "/category-info/softskills",
+    "createdAt" : ISODate("2022-10-11T16:30:24.335+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:30:24.335+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("63459d88d4a59348b0c6e2e5"),
+    "title" : "آموزش جامع جاوا اسکریپت",
+    "href" : "/course-info/js-expert",
+    "parent" : ObjectId("6345987bd4a59348b0c6e2a7"),
+    "createdAt" : ISODate("2022-10-11T16:44:56.935+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:44:56.935+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("63459dc0d4a59348b0c6e2e8"),
+    "title" : "آموزش جامع React js",
+    "href" : "/course-info/react_expert",
+    "parent" : ObjectId("6345987bd4a59348b0c6e2a7"),
+    "createdAt" : ISODate("2022-10-11T16:45:52.986+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:45:52.986+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("63459dced4a59348b0c6e2eb"),
+    "title" : "آموزش Html",
+    "href" : "/course-info/html",
+    "parent" : ObjectId("6345987bd4a59348b0c6e2a7"),
+    "createdAt" : ISODate("2022-10-11T16:46:06.784+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:46:06.784+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("63459dd7d4a59348b0c6e2ee"),
+    "title" : "آموزش Css",
+    "href" : "/course-info/css-course",
+    "parent" : ObjectId("6345987bd4a59348b0c6e2a7"),
+    "createdAt" : ISODate("2022-10-11T16:46:15.451+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:46:15.451+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("63459df0d4a59348b0c6e2f1"),
+    "title" : "آموزش بوت استرپ",
+    "href" : "/course-info/bootstrap",
+    "parent" : ObjectId("6345987bd4a59348b0c6e2a7"),
+    "createdAt" : ISODate("2022-10-11T16:46:40.236+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:46:40.236+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("63459dfcd4a59348b0c6e2f4"),
+    "title" : "آموزش ویو جی اس",
+    "href" : "/course-info/vuejs",
+    "parent" : ObjectId("6345987bd4a59348b0c6e2a7"),
+    "createdAt" : ISODate("2022-10-11T16:46:52.686+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:46:52.686+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("63459e22d4a59348b0c6e2f7"),
+    "title" : "آموزش NPM",
+    "href" : "/course-info/npm",
+    "parent" : ObjectId("6345987bd4a59348b0c6e2a7"),
+    "createdAt" : ISODate("2022-10-11T16:47:30.737+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:47:30.737+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6345a023d4a59348b0c6e30f"),
+    "title" : "آموزش جامع Nodejs",
+    "href" : "/course-info/node_expert",
+    "parent" : ObjectId("63459980d4a59348b0c6e2aa"),
+    "createdAt" : ISODate("2022-10-11T16:56:03.837+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:56:03.837+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6345a071d4a59348b0c6e312"),
+    "title" : "آموزش دیتابیس Mysql",
+    "href" : "/course-info/mysql-course",
+    "parent" : ObjectId("63459980d4a59348b0c6e2aa"),
+    "createdAt" : ISODate("2022-10-11T16:57:21.200+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:57:21.200+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6345a080d4a59348b0c6e315"),
+    "title" : "آموزش دیتابیس Mongo",
+    "href" : "/course-info/mongo-course",
+    "parent" : ObjectId("63459980d4a59348b0c6e2aa"),
+    "createdAt" : ISODate("2022-10-11T16:57:36.496+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:57:36.496+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6345a08fd4a59348b0c6e318"),
+    "title" : "آموزش داکر",
+    "href" : "/course-info/docker",
+    "parent" : ObjectId("63459980d4a59348b0c6e2aa"),
+    "createdAt" : ISODate("2022-10-11T16:57:51.970+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:57:51.970+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6345a0b1d4a59348b0c6e31e"),
+    "title" : "آموزش جامع PHP",
+    "href" : "/course-info/php-expert",
+    "parent" : ObjectId("63459980d4a59348b0c6e2aa"),
+    "createdAt" : ISODate("2022-10-11T16:58:25.137+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:58:25.137+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6345a107d4a59348b0c6e324"),
+    "title" : "آموزش جامع پایتون",
+    "href" : "/course-info/py-expert",
+    "parent" : ObjectId("634599e2d4a59348b0c6e2b0"),
+    "createdAt" : ISODate("2022-10-11T16:59:51.805+0000"),
+    "updatedAt" : ISODate("2022-10-11T16:59:51.805+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6345a11cd4a59348b0c6e327"),
+    "title" : "آموزش هوش مصنوعی با پایتون",
+    "href" : "/course-info/ai-with-py",
+    "parent" : ObjectId("634599e2d4a59348b0c6e2b0"),
+    "createdAt" : ISODate("2022-10-11T17:00:12.253+0000"),
+    "updatedAt" : ISODate("2022-10-11T17:00:12.253+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6345a12ed4a59348b0c6e32a"),
+    "title" : "آموزش دیتا ماینینگ با پایتون",
+    "href" : "/course-info/ai-with-py",
+    "parent" : ObjectId("634599e2d4a59348b0c6e2b0"),
+    "createdAt" : ISODate("2022-10-11T17:00:30.669+0000"),
+    "updatedAt" : ISODate("2022-10-11T17:00:30.669+0000"),
+    "__v" : NumberInt(0)
+}
+{
+    "_id" : ObjectId("6345a166d4a59348b0c6e32d"),
+    "title" : "آموزش ساخت ربات با پایتون",
+    "href" : "/course-info/ai-with-py",
+    "parent" : ObjectId("634599e2d4a59348b0c6e2b0"),
+    "createdAt" : ISODate("2022-10-11T17:01:26.895+0000"),
+    "updatedAt" : ISODate("2022-10-11T17:01:26.895+0000"),
+    "__v" : NumberInt(0)
+}

@@ -1,0 +1,166 @@
+@font-face {
+  font-family: "IRANSans";
+  src: url(../../public/IRANSans/IRANSans.ttf);
+  font-weight: 400;
+}
+@font-face {
+  font-family: "IRANSans";
+  src: url(../../public/IRANSans/IRANSans_UltraLight.ttf);
+  font-weight: 100;
+}
+@font-face {
+  font-family: "IRANSans";
+  src: url(../../public/IRANSans/IRANSans_Light.ttf);
+  font-weight: 300;
+}
+/*  */
+@font-face {
+  font-family: "IRANSans";
+  src: url(../../public/IRANSans/IRANSans_Medium.ttf);
+  font-weight: 500;
+  
+}
+@font-face {
+  font-family: "IRANSans";
+  src: url(../../public/IRANSans/IRANSans_Bold.ttf);
+  font-weight: 700;
+}
+@font-face {
+  font-family: "IRANSans";
+  src: url(../../public/IRANSans/IRANSans_Black.ttf);
+  font-weight: 900;
+}
+
+:root {
+  --primary-font: "IRANSans";
+  --primary-color: #2bce56;
+  --sabzlearn-green: #1eb301;
+  --white-color: #fff;
+  --dark-color: #464749;
+}
+
+body {
+  line-height: 1.6;
+  font-size: 1.6rem;
+  font-family: var(--primary-font);
+  direction: rtl;
+}
+a {
+  text-decoration: none;
+  color: var(--dark-color);
+  transition: all 400ms ease;
+}
+
+
+*{
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+  font-family: "IRANSans";
+}
+
+
+/* Start Helper Classes */
+
+.title {
+  font-size: 2.3rem;
+  color: #444446;
+  font-weight: bold;
+  line-height: 1.2;
+  position: relative;
+}
+
+.title::before {
+  content: "";
+  position: absolute;
+  right: -1rem;
+  width: 0.4rem;
+  height: 4.4rem;
+  background-color: var(--primary-color);
+  border-radius: 5rem;
+  transform: rotate(8deg);
+}
+
+.title::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  /* max-width: 250px; */
+  height: 60%;
+  background-color: rgba(43, 206, 86, 0.2);
+}
+/* Finish Helper Classes */
+
+/* Start Default Styles */
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+body {
+  line-height: 1.6;
+  font-size: 1.6rem;
+  font-family: var(--primary-font);
+  direction: rtl;
+}
+
+*,
+*::after,
+*::before {
+  outline: none;
+  box-sizing: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: var(--dark-color);
+  transition: all 400ms ease;
+}
+
+a:hover {
+  color: #1e83f0;
+}
+
+i {
+  user-select: none;
+}
+
+.Toastify__toast {
+  font-family: 'IRANSans', sans-serif !important;
+  padding-right: 3rem !important;
+  direction: rtl;              /* متن راست‌چین */
+  text-align: right;           /* ترازبندی متن از راست */
+  justify-content: space-between;
+}
+
+.Toastify__toast-icon {
+  margin-left: 5px;           /* فاصله آیکون از متن */
+  margin-right: 0;             /* حذف فاصله سمت راست */
+  order: 2;                    /* جابجایی آیکون به بعد از متن */
+  direction: ltr;              /* جلوگیری از چرخش آیکون */
+}
+
+.Toastify__toast-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link:hover{
+  color: inherit !important;
+}
+
+.mb2{
+  margin-bottom: 2rem;
+}
+
+/* Finish Default Styles */

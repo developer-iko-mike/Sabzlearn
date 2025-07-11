@@ -1,0 +1,22 @@
+{
+    "_id" : ObjectId("6345ce0507603939bc74ea41"),
+    "name" : "آموزش ری اکت ( ReactJS ) در دنیای واقعی | از 0 تا استخدام",
+    "description" : "حدود 99 ساعت آموزش جامع و تخصصی ری اکت!  شما در دوره آموزش ری اکت ReactJS ، این کتابخانه قدرتمند و پر استفاده جاوا اسکریپت را به صورت کاملا پروژه محور و کاربردی یاد میگیرید! ری اکت گل سرسبد فرانت اند محسوب میشود،در این دوره، از پایه تا پیشرفته، کتابخانه React.js را همراه با ابزارهای مدرن مثل Redux، Hooks و Next.js یاد می‌گیرید. تمرکز اصلی روی توسعه اپلیکیشن‌های Single Page (SPA) و ارتباط با API است. با انجام پروژه‌های واقعی، مهارت لازم برای استخدام به عنوان توسعه‌دهنده فرانت‌اند را کسب خواهید کرد.",
+    "cover" : "/courses/react.jpg",
+    "shortName" : "react_expert",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1403-12-01T20:11:49.482+0000"),
+    "updatedAt" : ISODate("1404-02-20T20:11:49.482+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "HTML & CSS & JS",
+    "courseTime" : NumberInt(98),
+    "courseViewType" : "دانلودی/آنلاین",
+    "isComplated" : NumberInt(0),
+    "shortLink" : "82",
+    "studentCount" : NumberInt(2448),
+    "supportProcess" : "تلفنی / انلاین",
+    "view" : NumberInt(50000),
+    "off" : NumberInt(50),
+    "price" : NumberInt(6250000)
+}

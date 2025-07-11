@@ -1,0 +1,66 @@
+{
+  "_id": ObjectId("6345d6f7586b68648f7f2a20"),
+  "name": "آموزش بوت استرپ",
+  "description": "آموزش کامل فریمورک Bootstrap 5 با تمرکز بر کامپوننت‌های مدرن، سیستم گرید پیشرفته و ریسپانسیو سازی",
+  "cover": "/courses/bootstrap5.webp",
+  "shortName": "bootstrap5",
+  "categoryID": ObjectId("6345cbd132c10de974957632"),
+  "creator": ObjectId("63458af21df89ae1469e2984"),
+  "createdAt": ISODate("1404-04-01T08:00:00.000+0000"),
+  "updatedAt": ISODate("1404-04-20T08:00:00.000+0000"),
+  "__v": NumberInt(0),
+  "courseRequire": "HTML & CSS",
+  "courseTime": NumberInt(22),
+  "courseViewType": "ضبط شده / آنلاین",
+  "isComplated": NumberInt(1),
+  "off": NumberInt(15),
+  "price": NumberInt(1800000),
+  "shortLink": "bs5-pro",
+  "studentCount": NumberInt(11200),
+  "supportProcess": "پشتیبانی تیکت",
+  "view": NumberInt(38500),
+  "comments": [
+    {
+      "_id": "635091df49de41347dfbae4e",
+      "body": "سیستم گرید عالی توضیح داده شد",
+      "course": "6345d6f7586b68648f7f2a20",
+      "creator": {
+        "_id": "68271d7664140681e82cf39c",
+        "username": "amirQuff",
+        "name": "امیر قاف"
+      },
+      "createdAt": "2025-05-01T14:20:00.000Z",
+      "updatedAt": "2025-05-01T14:20:00.000Z"
+    },
+    {
+      "_id": "635091df49de41347dfbae4f",
+      "body": "کامپوننت‌های مدرن عالی بودن",
+      "course": "6345d6f7586b68648f7f2a20",
+      "creator": {
+        "_id": "6827228e64140681e82cf3e3",
+        "username": "rezaZendadel",
+        "name": "رضا زنده دل"
+      },
+      "createdAt": "2025-05-02T09:45:00.000Z",
+      "updatedAt": "2025-05-02T09:45:00.000Z"
+    }
+  ],
+  "sessions": [
+    {
+      "_id": "6345daddda1fd01ed3545323",
+      "title": "کار با سیستم گرید پیشرفته",
+      "course": "6345d6f7586b68648f7f2a20",
+      "createdAt": "2025-04-05T08:00:00.000Z",
+      "updatedAt": "2025-04-10T08:00:00.000Z",
+      "__v": NumberInt(0)
+    },
+    {
+      "_id": "6345daddda1fd01ed3545324",
+      "title": "کاستومایز تم با Sass",
+      "course": "6345d6f7586b68648f7f2a20",
+      "createdAt": "2025-04-12T08:00:00.000Z",
+      "updatedAt": "2025-04-17T08:00:00.000Z",
+      "__v": NumberInt(0)
+    }
+  ]
+}

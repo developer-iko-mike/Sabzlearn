@@ -1,0 +1,65 @@
+
+
+.NotFound{
+  height: 43rem;
+  background: #f4f6f8 url("./Assets/404.gif") no-repeat center center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.NotFoundBTNs{
+position: absolute;
+bottom: 3rem;
+display: flex;
+width: 25rem;
+gap: 1.5rem;
+}
+
+.noLoginButton{
+  width: 33rem;
+}
+
+.magic-btn {
+  position: relative;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff !important;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  z-index: 1;
+  transition: transform 0.3s ease;
+  flex-grow: 1;
+  text-align: center !important;
+}
+
+.magic-btn::before,
+.magic-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--sabzlearn-green);
+  z-index: -1;
+  transition: all 0.4s ease-in-out;
+  transform: skewX(-20deg);
+}
+
+.magic-btn:hover::before {
+  left: 100%;
+}
+
+.magic-btn:hover {
+  color: #fff !important;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--primary-color);
+}
+
+.magic-btn:active {
+  transform: scale(0.98);
+}

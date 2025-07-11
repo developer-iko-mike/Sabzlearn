@@ -1,0 +1,12 @@
+.login-form__username .fa-comment {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-68%);
+  fill: #ccc;
+}
+.login-form__username-textarea {
+  min-height: 75px;
+  resize: vertical;
+  line-height: 1.5;
+}

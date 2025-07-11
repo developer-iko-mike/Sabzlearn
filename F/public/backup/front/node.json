@@ -1,0 +1,22 @@
+{
+    "_id" : ObjectId("6345cda6474f74e04218f6f7"),
+    "name" : "دوره جامع Node.js برای بازار کار",
+    "description" : "این دوره به صورت پروژه‌محور طراحی شده و تمام مفاهیم اساسی Node.js، از مبانی اولیه تا توسعه APIهای پیشرفته را پوشش می‌دهد. شما با فریم‌ورک‌های محبوب مثل Express، پایگاه‌داده‌های NoSQL مانند MongoDB و مفاهیمی مانند Authentication و Deployment آشنا می‌شوید. در پایان دوره، توانایی ساخت برنامه‌های تحت سرور واقعی و ورود به بازار کار را خواهید داشت.",
+    "cover" : "/courses/nodejs.png",
+    "shortName" : "node_expert",
+    "categoryID" : ObjectId("6345cc0a32c10de974957635"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-01-05T20:10:14.569+0000"),
+    "updatedAt" : ISODate("1404-03-01T20:10:14.569+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "",
+    "courseTime" : NumberInt(130),
+    "courseViewType" : "به صورت آنلاین",
+    "isComplated" : NumberInt(1),
+    "shortLink" : "128",
+    "studentCount" : NumberInt(684),
+    "supportProcess" : "انلاین",
+    "view" : NumberInt(15000),
+    "off" : NumberInt(40),
+    "price" : NumberInt(2150000)
+}

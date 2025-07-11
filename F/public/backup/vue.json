@@ -1,0 +1,54 @@
+{
+  "_id": ObjectId("6345d7e7586b68648f7f2a21"),
+  "name": "آموزش ویو جی اس",
+  "description": "دوره پروژه‌محور Vue.js 3 شامل Composition API، Vue Router، Vuex و интеграция با Backend",
+  "cover": "/courses/vue3.png",
+  "shortName": "vue3",
+  "categoryID": ObjectId("6345cbd132c10de974957632"),
+  "creator": ObjectId("63458af21df89ae1469e2984"),
+  "createdAt": ISODate("1404-04-10T10:30:00.000+0000"),
+  "updatedAt": ISODate("1404-05-01T10:30:00.000+0000"),
+  "__v": NumberInt(0),
+  "courseRequire": "JavaScript & HTML",
+  "courseTime": NumberInt(35),
+  "courseViewType": "ضبط شده / آنلاین",
+  "isComplated": NumberInt(1),
+  "off": NumberInt(20),
+  "price": NumberInt(3200000),
+  "shortLink": "vue3-pro",
+  "studentCount": NumberInt(8700),
+  "supportProcess": "پشتیبانی ویدیویی",
+  "view": NumberInt(29500),
+  "comments": [
+    {
+      "_id": "635091df49de41347dfbae50",
+      "body": "بهترین آموزش ویو ۳ به فارسی",
+      "course": "6345d7e7586b68648f7f2a21",
+      "creator": {
+        "_id": "6826ee7c992a736f48813bda",
+        "username": "mohammadiko",
+        "name": "محمدیکو"
+      },
+      "createdAt": "2025-05-05T12:15:00.000Z",
+      "updatedAt": "2025-05-05T12:15:00.000Z"
+    }
+  ],
+  "sessions": [
+    {
+      "_id": "6345daddda1fd01ed3545325",
+      "title": "مبانی Composition API",
+      "course": "6345d7e7586b68648f7f2a21",
+      "createdAt": "2025-04-15T08:00:00.000Z",
+      "updatedAt": "2025-04-20T08:00:00.000Z",
+      "__v": NumberInt(0)
+    },
+    {
+      "_id": "6345daddda1fd01ed3545326",
+      "title": "مدیریت State با Pinia",
+      "course": "6345d7e7586b68648f7f2a21",
+      "createdAt": "2025-04-22T08:00:00.000Z",
+      "updatedAt": "2025-04-27T08:00:00.000Z",
+      "__v": NumberInt(0)
+    }
+  ]
+}

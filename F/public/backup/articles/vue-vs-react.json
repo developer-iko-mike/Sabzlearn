@@ -1,0 +1,13 @@
+{
+    "_id" : ObjectId("63488b82c62abbaa2dd4daeb"),
+    "title" : "مقایسه ویو و ری اکت",
+    "description" : "متن چکیده برای مقایسه ویو و ری اکت",
+    "body" : "متن مقایسه ویو و ری اکت",
+    "cover" : "images/courses/js.jpeg",
+    "shortName" : "vue-vs-react",
+    "categoryID" : ObjectId("634889e625325a6b3d34f002"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("2022-10-13T22:04:50.484+0000"),
+    "updatedAt" : ISODate("2022-10-13T22:04:50.484+0000"),
+    "__v" : NumberInt(0)
+}

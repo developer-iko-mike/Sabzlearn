@@ -1,0 +1,698 @@
+.course-info__link {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  border-radius: 0.3rem;
+  padding: 0.4rem 1rem;
+  background-color: rgba(43, 206, 86, 0.2);
+}
+
+.course-info__link:hover {
+  color: var(--primary-color) !important;
+}
+
+.course-info__title {
+  margin: 2rem 0;
+  font-weight: bold;
+  font-size: 2.4rem;
+  color: #464749;
+}
+
+.course-info__text {
+  margin-bottom: 0.5rem;
+  font-size: 1.6rem;
+  color: #7b868a;
+}
+
+.course-info__social-media {
+  margin-bottom: 3rem;
+}
+
+.course-info__social-media-item {
+  color: #b1bbbf;
+  margin-left: 1.7rem;
+  transition: all 400ms ease;
+}
+
+.course-info__icon {
+  font-size: 2rem;
+}
+
+.course-info__video {
+  width: 100%;
+  border-radius: 1rem;
+}
+
+/* Finish Course Info Styles */
+
+/* Start Course Progress Styles */
+
+.course-progress {
+  border-radius: 1rem;
+  margin: 3rem 0;
+  padding: 2rem 2rem 1.2rem 2rem;
+  background-color: #f0f2f7;
+}
+
+.course-progress__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.course-progress__icon {
+  font-size: 2.5rem;
+  color: #7b868a;
+}
+
+.course-progress__title {
+  margin-right: 1.5rem;
+  color: #7b868a;
+  font-size: 1.5rem;
+}
+
+.course-progress__bar {
+  border-radius: 10rem;
+  height: 1rem;
+}
+
+.progress-bar {
+  background-color: #1fbd50;
+}
+
+/* Finish Course Progress Styles */
+
+/* Start Introduction styles */
+
+.introduction {
+  padding: 3rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 13px 1px rgba(70, 72, 77, 0.08);
+}
+
+.introduction__img {
+  margin-top: 3rem;
+  display: block;
+  border-radius: 1rem;
+}
+
+.introduction__text {
+  margin-top: 2rem;
+  color: #7a7a7a;
+  font-size: 1.5rem;
+}
+
+.introduction__btns {
+  margin-top: 4rem;
+}
+
+.introduction__btns-item {
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
+}
+
+.introduction__btns-item:hover {
+  color: var(--white-color);
+  background-color: var(--primary-color);
+}
+
+.introduction__topic {
+  margin-top: 4rem;
+}
+
+.accordion {
+  margin-bottom: 2rem;
+}
+
+.accordion-item {
+  background-color: #f7f9fa;
+}
+
+.accordion-button {
+  background-color: #f7f9fa;
+  font-size: 1.5rem;
+  padding: 1.25rem;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #f7f9fa;
+}
+
+.accordion-button::after {
+  position: absolute;
+  left: 1.5rem;
+  width: 2rem;
+  height: 2rem;
+  background-position: center;
+}
+
+/* اضافه کردن ترنزیشن اصلی */
+.accordion-collapse {
+  transition: height 0.3s ease-in-out !important;
+}
+
+/* استایل پیشفرض هدر */
+.accordion-button {
+  transition: all 0.2s ease-in-out !important;
+}
+
+.introduction__accordion-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.25rem;
+}
+
+.introduction__accordion-right {
+  display: flex;
+  align-items: center;
+}
+
+.introduction__accordion-count {
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 1px solid #bfbfbf;
+  color: #656464;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.introduction__accordion-icon {
+  margin: 0 1.5rem;
+  color: #939aa3;
+  font-size: 1.8rem;
+}
+
+.introduction__accordion-link {
+  color: #161616;
+}
+
+.introduction__accordion-time {
+  color: #7a7a7a;
+}
+
+/* Finish Introduction styles */
+
+/* Start Teacher Details Styles */
+
+.techer-details {
+  border-radius: 0.5rem;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0 0 13px 1px rgba(70, 72, 77, 0.08);
+}
+
+.techer-details__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.techer-details__header-right {
+  display: flex;
+  align-items: center;
+}
+
+.techer-details__header-img {
+  width: 62px;
+  height: auto;
+  border-radius: 50%;
+  box-shadow: 2px 2px 20px #00000021;
+}
+
+.techer-details__header-titles {
+  display: flex;
+  flex-direction: column;
+  margin-right: 2rem;
+}
+
+.techer-details__header-link {
+  text-decoration: none;
+  color: #7b868a;
+}
+
+.techer-details__header-skill {
+  color: #7b868a;
+  font-size: 1.2rem;
+}
+
+.techer-details__header-left {
+  display: flex;
+  align-items: center;
+  color: var(--white-color);
+  background-color: var(--primary-color);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.techer-details__header-icon {
+  font-size: 1.8rem;
+}
+
+.techer-details__header-name {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-right: 0.4rem;
+}
+
+.techer-details__footer {
+  margin-top: 1rem;
+  color: #7b868a;
+  font-size: 14px;
+}
+
+/* Finish Teacher Details Styles */
+
+/* Start Sidebar Styles */
+
+.course-info__register {
+  text-align: center;
+  background-color: #1fbd50;
+  padding: 1.5rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 12px rgba(31, 189, 80, 36%);
+}
+
+.course-info__register-title {
+  font-size: 1.7rem;
+  color: var(--white-color);
+  font-weight: bold;
+}
+
+.course-info__register-icon {
+  font-size: 2rem;
+}
+
+.course-info__top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 2px solid #f0f2f7;
+}
+
+.course-info__total-sale-icon {
+  color: #555555;
+  font-size: 2.7rem;
+}
+
+.course-info__total-sale-text {
+  color: #7f8187;
+}
+
+.course-info__total-sale-number {
+  color: var(--white-color);
+  background-color: #c4c7cf;
+  border-radius: 0.5rem;
+  padding: 0.3rem 1.2rem;
+}
+
+.course-info__bottom {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 2rem;
+  color: #7b868a;
+}
+
+.course-info__total-comment,
+.course-info__total-view {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.course-info__total-comment::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  background-color: #e5e5e5;
+  left: -3rem;
+}
+
+.course-info__total-comment-icon,
+.course-info__total-view-icon {
+  font-size: 2.2rem;
+}
+
+.course-info__total-comment-text,
+.course-info__total-view-text {
+  font-size: 1.4rem;
+  margin-right: 1rem;
+}
+
+.course-info__header-short-url {
+  display: flex;
+  align-items: center;
+  color: #7b868a;
+}
+
+.course-info__short-url-icon {
+  font-size: 2rem;
+}
+
+.course-info__short-url-text {
+  font-size: 1.7rem;
+  margin-right: 0.5rem;
+}
+
+.course-info__short-url {
+  display: block;
+  margin: 1rem 0;
+  border: 1px solid #dcdcdc;
+  color: #a7a7a7;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.4rem;
+}
+
+/* Finish Sidebar Styles */
+
+.courses-info {
+  position: sticky;
+  top: 2rem;
+}
+
+.course-info {
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  padding: 2.2rem;
+  box-shadow: 0 0 13px 1px rgba(70, 72, 77, 0.08);
+  border: 1px solid #f2f2f2;
+}
+
+.course-info__topic-title {
+  display: block;
+  color: var(--dark-color);
+  font-size: 1.8rem;
+}
+
+.course-info__topic-text {
+  font-size: 1.5rem;
+  color: #7d7e7f;
+}
+
+.course-info__courses-title {
+  font-size: 1.8rem;
+  display: block;
+  color: var(--dark-color);
+  margin-bottom: 1.5rem;
+}
+
+.course-info__courses-list-item {
+  margin-bottom: 2rem;
+}
+
+.course-info__courses-link {
+  display: flex;
+  align-items: center;
+}
+
+.course-info__courses-img {
+  width: 70px;
+  border-radius: 0.5rem;
+}
+
+.course-info__courses-text {
+  font-size: 1.3rem;
+  margin-right: 0.5rem;
+  color: #8d8d8d;
+  font-weight: bold;
+}
+
+/* کلاس‌های عمومی و layout */
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.flex-wrap-reverse {
+  flex-wrap: wrap-reverse;
+}
+
+.gap-y-4 {
+  row-gap: 1rem; /* 16px */
+}
+
+.gap-x-6 {
+  column-gap: 1.5rem; /* 24px */
+}
+
+.gap-x-2\.5 {
+  column-gap: 0.625rem; /* 10px */
+}
+
+/* کلاس‌های دکمه */
+.btn {
+  /* اینها استایل‌های پایه دکمه هستند که احتمالاً از DaisyUI یا کتابخانه مشابه آمده‌اند */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem; /* 8px */
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  color: white;
+  border: 1px solid transparent;
+  font-size: 1.7rem;
+
+  text-align: center;
+  background-color: #1fbd50;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 12px rgba(31, 189, 80, 36%);
+}
+
+.btn-primary:hover {
+  background-color: #0ac244; /* رنگ تیره‌تر برای hover */
+}
+
+/* کلاس‌های عرض */
+.w-full {
+  width: 100%;
+}
+
+.w-auto {
+  width: auto;
+}
+
+/* کلاس‌های متن و تایپوگرافی */
+.text-slate-500 {
+  color: #64748b; /* رنگ slate-500 */
+}
+
+.fffantasy {
+  font-family: fantasy;
+}
+
+.dark .dark\:text-white\/70 {
+  color: rgba(255, 255, 255, 0.7); /* متن سفید با opacity 70% در حالت تاریک */
+}
+
+.text-xl {
+  font-size: 2.2rem; /* 20px */
+  line-height: 1.75rem; /* 28px */
+}
+
+.text-2xl {
+  font-size: 3.2rem; /* 24px */
+  line-height: 2rem; /* 32px */
+}
+
+.text-lg {
+  font-size: 2.5rem; /* 18px */
+  line-height: 1.75rem; /* 28px */
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.gap-x-2 {
+  column-gap: 12px; /* 10px */
+}
+
+.g-08 {
+  gap: 0.5rem;
+}
+
+/* کلاس‌های فونت سفارشی (احتمالاً برای فونت فارسی Dana) */
+.font-danaBold {
+  font-weight: 700; /* bold */
+}
+
+.font-danaMedium {
+  font-weight: 500; /* medium */
+}
+
+/* استایل‌های SVG */
+.w-6 {
+  width: 1.5rem; /* 24px */
+}
+
+.h-6 {
+  height: 1.5rem; /* 24px */
+}
+
+.buyBtn {
+  width: fit-content !important;
+  min-width: 150px; /* حداقل عرض برای حفظ خوانایی */
+  padding: 0.5rem 1.5rem !important;
+  white-space: nowrap; /* جلوگیری از شکستن خط متن */
+  margin: 0 !important;
+
+  margin-top: 2rem;
+  /* max-width: 15rem; */
+  padding: 0.8rem 1.7rem;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.w-fit {
+  width: fit-content !important;
+}
+
+/* استایل‌های رسپانسیو */
+@media (min-width: 640px) {
+  /* sm */
+  .sm\:w-auto {
+    width: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* lg */
+  .lg\:justify-between {
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 1280px) {
+  /* xl */
+  .xl\:items-center {
+    align-items: center;
+  }
+}
+
+/* Loading Spinner Styles */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 50px solid #ffffff41;
+  border-top: 50px solid var(--primary-color);
+  border-radius: 50%;
+  box-shadow: 0 -4px 7px rgba(50, 205, 50, 0.781);
+  animation: spin 1s linear infinite;
+  position: relative;
+}
+
+.loading-spinnerText {
+  position: fixed;
+  margin: 0 auto;
+  animation: hiddenOut 2s linear infinite;
+}
+
+.loading-spinnerText::before {
+  content: "... ";
+  animation: addot 2s linear infinite;
+}
+
+@keyframes addot {
+  0% {
+    content: "";
+  }
+  15% {
+    content: ". ";
+  }
+  30% {
+    content: ".. ";
+  }
+  45% {
+    content: "... ";
+  }
+  60% {
+    content: ".. ";
+  }
+  75% {
+    content: ". ";
+  }
+  100% {
+    content: "";
+  }
+}
+@keyframes hiddenOut {
+  0% {
+    color: #0000003b;
+    font-size: 6px;
+  }
+  50% {
+    color: #000;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  100% {
+    color: #0000003b;
+    font-size: 6px;
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* استایل برای اعلان نیاز به ورود */
+.login-alert {
+  text-align: center;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 2rem auto;
+}

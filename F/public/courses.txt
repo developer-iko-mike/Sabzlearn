@@ -1,0 +1,789 @@
+{
+    "_id" : ObjectId("6345cda6474f74e04218f6f7"),
+    "name" : "دوره پیشرفته Node.js | معماری میکروسرویس و DevOps",
+    "description" : "آموزش Node.js 20 با تمرکز بر معماری‌های مدرن شامل میکروسرویس، Event-Driven Architecture، Dockerize و CI/CD. پروژه‌های واقعی مانند سیستم پرداخت، چت Real-Time و API Gateway.",
+    "cover" : "/courses/node-advanced.png",
+    "shortName" : "node_expert",
+    "categoryID" : ObjectId("6345cc0a32c10de974957635"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-02-01T07:30:00.000+0000"),
+    "updatedAt" : ISODate("1404-04-01T07:30:00.000+0000"),
+    "__v" : NumberInt(2),
+    "courseRequire" : "JavaScript + Linux Basics",
+    "courseTime" : NumberInt(90),
+    "courseViewType" : "آنلاین پروژه‌محور",
+    "isComplated" : NumberInt(1),
+    "shortLink" : "node-devops",
+    "studentCount" : NumberInt(9200),
+    "supportProcess" : "پشتیبانی VIP",
+    "view" : NumberInt(78500),
+    "off" : NumberInt(35),
+    "price" : NumberInt(6500000),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae57",
+            "body" : "آموزش Dockerize و Kubernetes عالی بود",
+            "course" : "6345cda6474f74e04218f6f7",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-03-15T11:30:00.000Z",
+            "updatedAt" : "2025-03-15T11:30:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545335",
+            "title" : "Event-Driven با RabbitMQ",
+            "course" : "6345cda6474f74e04218f6f7",
+            "createdAt" : "2025-02-10T08:00:00.000Z",
+            "updatedAt" : "2025-02-15T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545336",
+            "title" : "پیاده‌سازی CI/CD با GitHub Actions",
+            "course" : "6345cda6474f74e04218f6f7",
+            "createdAt" : "2025-02-20T08:00:00.000Z",
+            "updatedAt" : "2025-02-25T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345ce0507603939bc74ea41"),
+    "name" : "آموزش ری اکت (ReactJS) پیشرفته | از صفر تا توسعه اپلیکیشن‌های سازمانی",
+    "description" : "حدود 120 ساعت آموزش جامع React 18 با آخرین ویژگی‌ها شامل Hooks پیشرفته، TypeScript، تست‌نویسی و معماری Enterprise. پروژه‌های واقعی مانند سیستم مدیریت محتوا، پلتفرم تجارت الکترونیک و شبکه اجتماعی.",
+    "cover" : "/courses/react-advanced.jpg",
+    "shortName" : "react_expert ",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-01-01T08:00:00.000+0000"),
+    "updatedAt" : ISODate("1404-03-01T08:00:00.000+0000"),
+    "__v" : NumberInt(1),
+    "courseRequire" : "JavaScript ES6+",
+    "courseTime" : NumberInt(120),
+    "courseViewType" : "آنلاین تعاملی",
+    "isComplated" : NumberInt(1),
+    "shortLink" : "react-pro",
+    "studentCount" : NumberInt(15400),
+    "supportProcess" : "مشاوره تخصصی + انجمن",
+    "view" : NumberInt(120500),
+    "off" : NumberInt(40),
+    "price" : NumberInt(8500000),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae55",
+            "body" : "بهترین دوره ری اکت فارسی با معماری Enterprise",
+            "course" : "6345ce0507603939bc74ea41",
+            "creator" : {
+                "_id" : "6826ee7c992a736f48813bda",
+                "username" : "mohammadiko",
+                "name" : "محمدیکو"
+            },
+            "createdAt" : "2025-04-10T14:20:00.000Z",
+            "updatedAt" : "2025-04-10T14:20:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae56",
+            "body" : "آموزش تست‌نویسی حرفه‌ای عالی بود",
+            "course" : "6345ce0507603939bc74ea41",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-04-12T09:15:00.000Z",
+            "updatedAt" : "2025-04-12T09:15:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545333",
+            "title" : "مدیریت State با Redux Toolkit",
+            "course" : "6345ce0507603939bc74ea41",
+            "createdAt" : "2025-01-05T08:00:00.000Z",
+            "updatedAt" : "2025-01-10T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545334",
+            "title" : "آزمون E2E با Cypress",
+            "course" : "6345ce0507603939bc74ea41",
+            "createdAt" : "2025-01-15T08:00:00.000Z",
+            "updatedAt" : "2025-01-20T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345cfc7586b68648f7f2430"),
+    "name" : "مدیریت پیشرفته پکیج‌ها با NPM و Yarn",
+    "description" : "آموزش حرفه‌ای مدیریت وابستگی‌ها شامل: Workspaces، Monorepo، انتشار Private Packages، Audit امنیتی و بهینه‌سازی Buildها",
+    "cover" : "/courses/npm-pro.webp",
+    "shortName" : "npm",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-03-01T10:00:00.000+0000"),
+    "updatedAt" : ISODate("1404-05-01T10:00:00.000+0000"),
+    "__v" : NumberInt(3),
+    "courseRequire" : "JavaScript + Terminal",
+    "courseTime" : NumberInt(8),
+    "courseViewType" : "فشرده آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(10),
+    "price" : NumberInt(1800000),
+    "shortLink" : "npm-pro",
+    "studentCount" : NumberInt(18500),
+    "supportProcess" : "پشتیبانی فنی",
+    "view" : NumberInt(65400),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae58",
+            "body" : "آموزش Monorepo دقیقاً چیزی بود که نیاز داشتم",
+            "course" : "6345cfc7586b68648f7f2430",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-05-05T16:45:00.000Z",
+            "updatedAt" : "2025-05-05T16:45:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545337",
+            "title" : "مدیریت Monorepo با Lerna",
+            "course" : "6345cfc7586b68648f7f2430",
+            "createdAt" : "2025-03-10T08:00:00.000Z",
+            "updatedAt" : "2025-03-15T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545338",
+            "title" : "امنیت پکیج‌ها با Audit",
+            "course" : "6345cfc7586b68648f7f2430",
+            "createdAt" : "2025-03-17T08:00:00.000Z",
+            "updatedAt" : "2025-03-22T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345d3c7586b68648f7f2a1d"),
+    "name" : "آموزش Css",
+    "description" : "آموزش کامل CSS3 شامل Flexbox، Grid، انیمیشن‌ها و طراحی ریسپانسیو",
+    "cover" : "/courses/css3_pro.png",
+    "shortName" : "css-course ",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-03-05T08:30:00.000+0000"),
+    "updatedAt" : ISODate("1404-03-25T08:30:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "آشنایی با HTML",
+    "courseTime" : NumberInt(30),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(20),
+    "price" : NumberInt(1800000),
+    "shortLink" : "css-pro",
+    "studentCount" : NumberInt(9500),
+    "supportProcess" : "پشتیبانی فنی",
+    "view" : NumberInt(42000),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae4d",
+            "body" : "آموزش Grid عالی بود!",
+            "course" : "6345d3c7586b68648f7f2a1d",
+            "creator" : {
+                "_id" : "6826ee7c992a736f48813bda",
+                "username" : "mohammadiko",
+                "name" : "محمدیکو"
+            },
+            "createdAt" : "2025-04-05T16:45:00.000Z",
+            "updatedAt" : "2025-04-05T16:45:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545321",
+            "title" : "Flexbox و Positioning",
+            "course" : "6345d3c7586b68648f7f2a1d",
+            "createdAt" : "2025-03-10T08:00:00.000Z",
+            "updatedAt" : "2025-03-15T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545322",
+            "title" : "CSS Grid پیشرفته",
+            "course" : "6345d3c7586b68648f7f2a1d",
+            "createdAt" : "2025-03-17T08:00:00.000Z",
+            "updatedAt" : "2025-03-22T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345daf7586b68648f7f2a24"),
+    "name" : "آموزش داکر",
+    "description" : "آموزش جامع Docker و Docker Compose شامل کانتینرایزیشن، مدیریت Imageها و Deployment",
+    "cover" : "/courses/docker-pro.webp",
+    "shortName" : "docker",
+    "categoryID" : ObjectId("6345cc0a32c10de974957635"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-06-01T11:10:00.000+0000"),
+    "updatedAt" : ISODate("1404-06-20T11:10:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "آشنایی با لینوکس",
+    "courseTime" : NumberInt(18),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(30),
+    "price" : NumberInt(4200000),
+    "shortLink" : "docker-master",
+    "studentCount" : NumberInt(3200),
+    "supportProcess" : "پشتیبانی تخصصی",
+    "view" : NumberInt(12800),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae53",
+            "body" : "آموزش Deployment عالی بود",
+            "course" : "6345daf7586b68648f7f2a24",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-07-01T09:45:00.000Z",
+            "updatedAt" : "2025-07-01T09:45:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545331",
+            "title" : "مبانی کانتینرایزیشن",
+            "course" : "6345daf7586b68648f7f2a24",
+            "createdAt" : "2025-06-05T08:00:00.000Z",
+            "updatedAt" : "2025-06-10T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545332",
+            "title" : "Docker Swarm در عمل",
+            "course" : "6345daf7586b68648f7f2a24",
+            "createdAt" : "2025-06-12T08:00:00.000Z",
+            "updatedAt" : "2025-06-17T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345d2b7586b68648f7f2a1c"),
+    "name" : "آموزش Html",
+    "description" : "آموزش کامل HTML5 با تمرکز بر ساختار سمانتیک، فرم‌های پیشرفته و انطباق با استانداردهای W3C",
+    "cover" : "/courses/html5_master.png",
+    "shortName" : "html",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-02-15T10:00:00.000+0000"),
+    "updatedAt" : ISODate("1404-03-01T10:00:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "ندارد",
+    "courseTime" : NumberInt(18),
+    "courseViewType" : "دانلودی/آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(10),
+    "price" : NumberInt(750000),
+    "shortLink" : "html-pro",
+    "studentCount" : NumberInt(12450),
+    "supportProcess" : "پشتیبانی فنی",
+    "view" : NumberInt(38500),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae4b",
+            "body" : "آموزش بسیار روان و ساختارمند",
+            "course" : "6345d2b7586b68648f7f2a1c",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-03-20T09:45:00.000Z",
+            "updatedAt" : "2025-03-20T09:45:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae4c",
+            "body" : "مناسب برای شروع طراحی وب",
+            "course" : "6345d2b7586b68648f7f2a1c",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-03-21T11:20:00.000Z",
+            "updatedAt" : "2025-03-21T11:20:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545319",
+            "title" : "ساختار سمانتیک HTML5",
+            "course" : "6345d2b7586b68648f7f2a1c",
+            "createdAt" : "2025-03-01T08:00:00.000Z",
+            "updatedAt" : "2025-03-05T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545320",
+            "title" : "فرم‌های پیشرفته و اعتبارسنجی",
+            "course" : "6345d2b7586b68648f7f2a1c",
+            "createdAt" : "2025-03-08T08:00:00.000Z",
+            "updatedAt" : "2025-03-12T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345d1a7586b68648f7f2a1b"),
+    "name" : "آموزش جامع جاوا اسکریپت",
+    "description" : "دوره کامل از مفاهیم پایه تا پیشرفته شامل ES6+، Async/Await، APIها و پروژه‌های واقعی",
+    "cover" : "/courses/js_master.webp",
+    "shortName" : "js-expert",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-03-01T09:15:00.000+0000"),
+    "updatedAt" : ISODate("1404-03-20T09:15:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "آشنایی با مبانی برنامه‌نویسی",
+    "courseTime" : NumberInt(45),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(15),
+    "price" : NumberInt(4200000),
+    "shortLink" : "js-pro",
+    "studentCount" : NumberInt(18700),
+    "supportProcess" : "آنلاین 24/7",
+    "view" : NumberInt(67500),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae49",
+            "body" : "بهترین منبع یادگیری جاوااسکریپت به زبان فارسی!",
+            "course" : "6345d1a7586b68648f7f2a1b",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-04-01T14:30:00.000Z",
+            "updatedAt" : "2025-04-01T14:30:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae4a",
+            "body" : "پروژه‌های عملی عالی داشت",
+            "course" : "6345d1a7586b68648f7f2a1b",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-04-02T10:15:00.000Z",
+            "updatedAt" : "2025-04-02T10:15:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545317",
+            "title" : "مفاهیم پایه و انواع داده",
+            "course" : "6345d1a7586b68648f7f2a1b",
+            "createdAt" : "2025-03-05T08:00:00.000Z",
+            "updatedAt" : "2025-03-10T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545318",
+            "title" : "کار با DOM پیشرفته",
+            "course" : "6345d1a7586b68648f7f2a1b",
+            "createdAt" : "2025-03-12T08:00:00.000Z",
+            "updatedAt" : "2025-03-17T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345d7e7586b68648f7f2a21"),
+    "name" : "آموزش ویو جی اس",
+    "description" : "دوره پروژه‌محور Vue.js 3 شامل Composition API، Vue Router، Vuex و интеграция با Backend",
+    "cover" : "/courses/vue3.png",
+    "shortName" : "vuejs",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-04-10T10:30:00.000+0000"),
+    "updatedAt" : ISODate("1404-05-01T10:30:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "JavaScript & HTML",
+    "courseTime" : NumberInt(35),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(20),
+    "price" : NumberInt(3200000),
+    "shortLink" : "vue3-pro",
+    "studentCount" : NumberInt(8700),
+    "supportProcess" : "پشتیبانی ویدیویی",
+    "view" : NumberInt(29500),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae50",
+            "body" : "بهترین آموزش ویو ۳ به فارسی",
+            "course" : "6345d7e7586b68648f7f2a21",
+            "creator" : {
+                "_id" : "6826ee7c992a736f48813bda",
+                "username" : "mohammadiko",
+                "name" : "محمدیکو"
+            },
+            "createdAt" : "2025-05-05T12:15:00.000Z",
+            "updatedAt" : "2025-05-05T12:15:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545325",
+            "title" : "مبانی Composition API",
+            "course" : "6345d7e7586b68648f7f2a21",
+            "createdAt" : "2025-04-15T08:00:00.000Z",
+            "updatedAt" : "2025-04-20T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545326",
+            "title" : "مدیریت State با Pinia",
+            "course" : "6345d7e7586b68648f7f2a21",
+            "createdAt" : "2025-04-22T08:00:00.000Z",
+            "updatedAt" : "2025-04-27T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345d6f7586b68648f7f2a20"),
+    "name" : "آموزش بوت استرپ",
+    "description" : "آموزش کامل فریمورک Bootstrap 5 با تمرکز بر کامپوننت‌های مدرن، سیستم گرید پیشرفته و ریسپانسیو سازی",
+    "cover" : "/courses/bootstrap5.webp",
+    "shortName" : "bootstrap",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-04-01T08:00:00.000+0000"),
+    "updatedAt" : ISODate("1404-04-20T08:00:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "HTML & CSS",
+    "courseTime" : NumberInt(22),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(15),
+    "price" : NumberInt(1800000),
+    "shortLink" : "bs5-pro",
+    "studentCount" : NumberInt(11200),
+    "supportProcess" : "پشتیبانی تیکت",
+    "view" : NumberInt(38500),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae4e",
+            "body" : "سیستم گرید عالی توضیح داده شد",
+            "course" : "6345d6f7586b68648f7f2a20",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-05-01T14:20:00.000Z",
+            "updatedAt" : "2025-05-01T14:20:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae4f",
+            "body" : "کامپوننت‌های مدرن عالی بودن",
+            "course" : "6345d6f7586b68648f7f2a20",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-05-02T09:45:00.000Z",
+            "updatedAt" : "2025-05-02T09:45:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545323",
+            "title" : "کار با سیستم گرید پیشرفته",
+            "course" : "6345d6f7586b68648f7f2a20",
+            "createdAt" : "2025-04-05T08:00:00.000Z",
+            "updatedAt" : "2025-04-10T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545324",
+            "title" : "کاستومایز تم با Sass",
+            "course" : "6345d6f7586b68648f7f2a20",
+            "createdAt" : "2025-04-12T08:00:00.000Z",
+            "updatedAt" : "2025-04-17T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345dcf7586b68648f7f2a26"),
+    "name" : "آموزش جامع پایتون",
+    "description" : "دوره کامل Python 3 از مفاهیم پایه تا پیشرفته شامل شی‌گرایی، کار با داده‌ها، توسعه وب با Django/Flask و اتوماسیون",
+    "cover" : "/courses/python-pro.png",
+    "shortName" : "py-expert",
+    "categoryID" : ObjectId("6345cc0a32c10de974957635"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-07-01T09:00:00.000+0000"),
+    "updatedAt" : ISODate("1404-08-15T09:00:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "مبانی برنامه‌نویسی",
+    "courseTime" : NumberInt(60),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(25),
+    "price" : NumberInt(5500000),
+    "shortLink" : "python-pro",
+    "studentCount" : NumberInt(23400),
+    "supportProcess" : "پشتیبانی VIP + انجمن",
+    "view" : NumberInt(98500),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae59",
+            "body" : "بهترین منبع یادگیری پایتون به فارسی!",
+            "course" : "6345dcf7586b68648f7f2a26",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-08-10T14:30:00.000Z",
+            "updatedAt" : "2025-08-10T14:30:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae5a",
+            "body" : "آموزش Django واقعاً حرفه‌ای بود",
+            "course" : "6345dcf7586b68648f7f2a26",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-08-12T11:15:00.000Z",
+            "updatedAt" : "2025-08-12T11:15:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545339",
+            "title" : "مبانی پایتون و ساختار داده‌ها",
+            "course" : "6345dcf7586b68648f7f2a26",
+            "createdAt" : "2025-07-05T08:00:00.000Z",
+            "updatedAt" : "2025-07-10T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545340",
+            "title" : "توسعه وب با Django REST Framework",
+            "course" : "6345dcf7586b68648f7f2a26",
+            "createdAt" : "2025-07-15T08:00:00.000Z",
+            "updatedAt" : "2025-07-20T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345def7586b68648f7f2a28"),
+    "name" : "پروژه‌های تخصصی با جاوااسکریپت",
+    "description" : "پیاده‌سازی ۱۰ پروژه واقعی از انواع اپلیکیشن‌های مدرن شامل سیستم مدیریت محتوا، پلتفرم تجارت الکترونیک، ابزارهای تحلیلی و برنامه‌های Real-Time با معماری‌های پیشرفته",
+    "cover" : "/courses/js-projects.png",
+    "shortName" : "js-projects",
+    "categoryID" : ObjectId("6345cbd132c10de974957632"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-09-01T10:00:00.000+0000"),
+    "updatedAt" : ISODate("1404-10-15T10:00:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "جاوااسکریپت پیشرفته + React/Node",
+    "courseTime" : NumberInt(80),
+    "courseViewType" : "پروژه‌محور تعاملی",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(20),
+    "price" : NumberInt(7500000),
+    "shortLink" : "js-realworld",
+    "studentCount" : NumberInt(12500),
+    "supportProcess" : "مشاوره فنی + کدریویو",
+    "view" : NumberInt(58700),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae5b",
+            "body" : "پروژه تجارت الکترونیک دقیقاً شبیه بازار کار بود!",
+            "course" : "6345def7586b68648f7f2a28",
+            "creator" : {
+                "_id" : "6826ee7c992a736f48813bda",
+                "username" : "mohammadiko",
+                "name" : "محمدیکو"
+            },
+            "createdAt" : "2025-10-05T15:45:00.000Z",
+            "updatedAt" : "2025-10-05T15:45:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae5c",
+            "body" : "آموزش WebSockets برای چت Real-Time عالی بود",
+            "course" : "6345def7586b68648f7f2a28",
+            "creator" : {
+                "_id" : "68271d7664140681e82cf39c",
+                "username" : "amirQuff",
+                "name" : "امیر قاف"
+            },
+            "createdAt" : "2025-10-08T11:20:00.000Z",
+            "updatedAt" : "2025-10-08T11:20:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545341",
+            "title" : "سیستم پرداخت با Stripe API",
+            "course" : "6345def7586b68648f7f2a28",
+            "createdAt" : "2025-09-10T08:00:00.000Z",
+            "updatedAt" : "2025-09-15T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545342",
+            "title" : "بهینه‌سازی عملکرد با Web Workers",
+            "course" : "6345def7586b68648f7f2a28",
+            "createdAt" : "2025-09-20T08:00:00.000Z",
+            "updatedAt" : "2025-09-25T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ],
+    "projects" : [
+        {
+            "title" : "پلتفرم تجارت الکترونیک",
+            "techStack" : [
+                "React",
+                "Node.js",
+                "MongoDB",
+                "Stripe"
+            ],
+            "features" : [
+                "پرداخت آنلاین",
+                "مدیریت موجودی",
+                "سیستم نظر دهی"
+            ]
+        },
+        {
+            "title" : "ابزار تحلیل داده Real-Time",
+            "techStack" : [
+                "WebSockets",
+                "Chart.js",
+                "Express"
+            ],
+            "features" : [
+                "نمایش زنده داده",
+                "خروجی PDF",
+                "هشدار لحظه‌ای"
+            ]
+        }
+    ]
+}
+{
+    "_id" : ObjectId("6345e0f7586b68648f7f2a29"),
+    "name" : "آموزش جامع جنگو | توسعه وب حرفه‌ای با پایتون",
+    "description" : "دوره کامل Django 4 از مفاهیم پایه تا توسعه اپلیکیشن‌های سازمانی شامل معماری MVT، Django REST Framework، سیستم احراز هویت پیشرفته و پیاده‌سازی پروژه‌های واقعی مانند سیستم بلاگ، فروشگاه آنلاین و پلتفرم مدیریت محتوا",
+    "cover" : "/courses/django-pro.png",
+    "shortName" : "django-pro",
+    "categoryID" : ObjectId("6345cc0a32c10de974957635"),
+    "creator" : ObjectId("63458af21df89ae1469e2984"),
+    "createdAt" : ISODate("1404-11-01T08:30:00.000+0000"),
+    "updatedAt" : ISODate("1405-01-15T08:30:00.000+0000"),
+    "__v" : NumberInt(0),
+    "courseRequire" : "پایتون متوسط + HTML/CSS",
+    "courseTime" : NumberInt(65),
+    "courseViewType" : "ضبط شده / آنلاین",
+    "isComplated" : NumberInt(1),
+    "off" : NumberInt(30),
+    "price" : NumberInt(6800000),
+    "shortLink" : "django-master",
+    "studentCount" : NumberInt(9800),
+    "supportProcess" : "پشتیبانی فنی + انجمن",
+    "view" : NumberInt(45600),
+    "comments" : [
+        {
+            "_id" : "635091df49de41347dfbae5d",
+            "body" : "بهترین آموزش جنگو به زبان فارسی با پروژه‌های واقعی",
+            "course" : "6345e0f7586b68648f7f2a29",
+            "creator" : {
+                "_id" : "6827228e64140681e82cf3e3",
+                "username" : "rezaZendadel",
+                "name" : "رضا زنده دل"
+            },
+            "createdAt" : "2025-12-10T13:15:00.000Z",
+            "updatedAt" : "2025-12-10T13:15:00.000Z"
+        },
+        {
+            "_id" : "635091df49de41347dfbae5e",
+            "body" : "آموزش REST Framework واقعاً کاربردی بود",
+            "course" : "6345e0f7586b68648f7f2a29",
+            "creator" : {
+                "_id" : "6826ee7c992a736f48813bda",
+                "username" : "mohammadiko",
+                "name" : "محمدیکو"
+            },
+            "createdAt" : "2025-12-12T10:45:00.000Z",
+            "updatedAt" : "2025-12-12T10:45:00.000Z"
+        }
+    ],
+    "sessions" : [
+        {
+            "_id" : "6345daddda1fd01ed3545343",
+            "title" : "معماری MVT و ORM پیشرفته",
+            "course" : "6345e0f7586b68648f7f2a29",
+            "createdAt" : "2025-11-10T08:00:00.000Z",
+            "updatedAt" : "2025-11-15T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        },
+        {
+            "_id" : "6345daddda1fd01ed3545344",
+            "title" : "پیاده‌سازی API با DRF",
+            "course" : "6345e0f7586b68648f7f2a29",
+            "createdAt" : "2025-11-20T08:00:00.000Z",
+            "updatedAt" : "2025-11-25T08:00:00.000Z",
+            "__v" : NumberInt(0)
+        }
+    ],
+    "projects" : [
+        {
+            "title" : "سیستم مدیریت محتوای سازمانی",
+            "techStack" : [
+                "Django",
+                "PostgreSQL",
+                "Celery"
+            ],
+            "features" : [
+                "ویرایشگر WYSIWYG",
+                "تایید چندمرحله‌ای محتوا",
+                "گزارش‌گیری پیشرفته"
+            ]
+        },
+        {
+            "title" : "فروشگاه اینترنتی",
+            "techStack" : [
+                "Django",
+                "Stripe",
+                "Redis"
+            ],
+            "features" : [
+                "پنل مدیریت پیشرفته",
+                "پرداخت آنلاین",
+                "سیستم تخفیف هوشمند"
+            ]
+        }
+    ]
+}

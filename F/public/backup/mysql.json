@@ -1,0 +1,54 @@
+{
+  "_id": ObjectId("6345d8f7586b68648f7f2a22"),
+  "name": "آموزش دیتابیس Mysql",
+  "description": "آموزش جامع طراحی، بهینه‌سازی و مدیریت پایگاه داده رابطه‌ای با MySQL و Workbench",
+  "cover": "/courses/mysql8.webp",
+  "shortName": "mysql-pro",
+  "categoryID": ObjectId("6345cc0a32c10de974957635"),
+  "creator": ObjectId("63458af21df89ae1469e2984"),
+  "createdAt": ISODate("1404-05-01T07:45:00.000+0000"),
+  "updatedAt": ISODate("1404-05-20T07:45:00.000+0000"),
+  "__v": NumberInt(0),
+  "courseRequire": "مبانی برنامه‌نویسی",
+  "courseTime": NumberInt(28),
+  "courseViewType": "ضبط شده / آنلاین",
+  "isComplated": NumberInt(1),
+  "off": NumberInt(10),
+  "price": NumberInt(2750000),
+  "shortLink": "mysql8",
+  "studentCount": NumberInt(6500),
+  "supportProcess": "پشتیبانی فنی",
+  "view": NumberInt(21500),
+  "comments": [
+    {
+      "_id": "635091df49de41347dfbae51",
+      "body": "بهترین دوره برای شروع MySQL",
+      "course": "6345d8f7586b68648f7f2a22",
+      "creator": {
+        "_id": "6827228e64140681e82cf3e3",
+        "username": "rezaZendadel",
+        "name": "رضا زنده دل"
+      },
+      "createdAt": "2025-06-01T10:00:00.000Z",
+      "updatedAt": "2025-06-01T10:00:00.000Z"
+    }
+  ],
+  "sessions": [
+    {
+      "_id": "6345daddda1fd01ed3545327",
+      "title": "طراحی Schema حرفه‌ای",
+      "course": "6345d8f7586b68648f7f2a22",
+      "createdAt": "2025-05-05T08:00:00.000Z",
+      "updatedAt": "2025-05-10T08:00:00.000Z",
+      "__v": NumberInt(0)
+    },
+    {
+      "_id": "6345daddda1fd01ed3545328",
+      "title": "بهینه‌سازی کوئری‌ها",
+      "course": "6345d8f7586b68648f7f2a22",
+      "createdAt": "2025-05-12T08:00:00.000Z",
+      "updatedAt": "2025-05-17T08:00:00.000Z",
+      "__v": NumberInt(0)
+    }
+  ]
+}
