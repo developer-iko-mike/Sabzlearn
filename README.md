@@ -1,7 +1,13 @@
+<div style="
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 2.5rem
+">
+<strong align="right" style="font-size: 1.25rem">پلتفرم آموزشی نوین برای یادگیری آنلاین </strong>
+<img align="left" src="./F/public/logo/Logo.png"  alt="Sabzlearn Logo"/> 
+</div>
 
-# <img src="https://raw.githubusercontent.com/developer-iko-mike/Sabzlearn/main/logo.png" width="40" height="40" alt="Sabzlearn Logo"/> Sabzlearn
-
-**پلتفرم آموزشی نوین برای یادگیری آنلاین**
 
 ![Project Preview](./F/public/preview.gif)
 
@@ -25,7 +31,7 @@ Sabzlearn یک پلتفرم آموزشی پیشرفته است که با آخر�
 
 ## 🛠️ فناوری‌ها
 <div align="center">
-  <img src="https://skillicons.dev/icons?i=react,bootstrap,styledcomponents,redux,git" width="300"/>
+  <img src="https://skillicons.dev/icons?i=react,bootstrap,styledcomponents,git" width="100%"/>
 </div>
 
 ## 🚀 راه‌اندازی پروژه
@@ -49,7 +55,7 @@ npm run dev
 
 ## 📸 تصاویر پروژه
 <div align="center">
-  <img src="./F/public/preview2.gif" width="30%" alt="صفحه اصلی"/>
+  <img src="./F/public/preview2.gif" width="100%" alt="صفحه اصلی"/>
 </div>
 
 ## 🤝 مشارکت
