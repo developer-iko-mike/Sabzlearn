@@ -1,5 +1,4 @@
 import React from "react";
-import './header.css'
 import TopBar from "./topBar/TopBar";
 import NavBar from "./navBar/NavBar";
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./search.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Course from "../../Components/course/Course";
 import SectionHeader from "../../Components/sectionHeader/SectionHeader";

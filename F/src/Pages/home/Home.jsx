@@ -1,5 +1,4 @@
 import React from 'react'
-import './home.css'
 import Landing from './Components/landing/Landing'
 import Courses from './Components/courses/Courses'
 import AboutUs from './Components/aboutUs/AboutUs'

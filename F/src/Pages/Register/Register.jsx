@@ -16,7 +16,6 @@ import Lock from "../../Components/Form/SVGs/Lock";
 import UnLock from "../../Components/Form/SVGs/UnLock";
 import headerFetch from "../../Components/Form/headerFetch";
 import { useNavigate } from "react-router-dom";
-import "./Register.css";
 import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Register() {

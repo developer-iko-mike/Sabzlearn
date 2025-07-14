@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./allArticle.css";
 import Breadcrumb from "../../Components/breadcrumb/Breadcrumb";
 import PagenationNumPage from "../../Components/pagenationNumPage/PagenationNumPage";
 import ArticleBox from "../home/Components/articles/articleBox/ArticleBox";

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./allCourses.css";
 import "../../Components/pagenationNumPage/pagenationNumPage.css";
 import PathNotFound from "../404/pathNotFound/PathNotFound";
 import Breadcrumb from "../../Components/breadcrumb/Breadcrumb";

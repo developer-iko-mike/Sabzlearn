@@ -1,6 +1,5 @@
 import React from "react";
 import "./contactUS.css";
-import "../Register/Register.css";
 import "../Login/Login.css";
 import { Link } from "react-router-dom";
 import Input from "../../Components/Form/Input";
