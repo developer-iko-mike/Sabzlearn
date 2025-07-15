@@ -547,6 +547,9 @@
 .aife {
   align-items: flex-end;
 }
+.aic {
+  align-items: center;
+}
 /* Border Radius */
 .br-2 {
   border-radius: 0.25rem;
@@ -2273,8 +2276,11 @@
 .pf {
   position: fixed;
 }
-.ps {
+.py {
   position: sticky;
+}
+.ps {
+  position: static;
 }
 /* Position combined */
 .ptrbl0 {
